@@ -1,5 +1,6 @@
 from pico2d import *
 
+import game_world
 from archery_cat import Archery_cat
 from start_screen import Start_screen
 from start_screen import Start_back
@@ -21,13 +22,11 @@ def handle_events():
         else:
             archery_cat.handle_event(event)
 
-def reset_world():
+def create_world():
     global running
-    global world
     global archery_cat
 
     running = True
-    world = []
 
     # start_back = Start_back()
     # world.append(start_back)
@@ -36,25 +35,22 @@ def reset_world():
     # world.append(start_screen)
     #
     archery_background = Archery_background()
-    world.append(archery_background)
+    game_world.add_object(archery_background)
 
     archery_cat = Archery_cat()
-    world.append(archery_cat)
+    game_world.add_object(archery_cat)
 def update_world():
-    for o in world:
-        o.update()
-    pass
+    game_world.update()
 
 
 def render_world():
     clear_canvas()
-    for o in world:
-        o.draw()
+    game_world.render()
     update_canvas()
 
 
 open_canvas(1000,600)
-reset_world()
+create_world()
 hide_lattice() # 격자 숨기기
 
 # game loop

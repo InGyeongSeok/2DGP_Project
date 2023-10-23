@@ -3,6 +3,10 @@
 from pico2d import load_image, get_time
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_a
 
+import game_world
+from archery_arrow import Arrow
+
+
 # from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT
 
 # state event check
@@ -24,8 +28,8 @@ def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
 
-# def space_down(e):
-#     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
+def space_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
 
 # time_out = lambda e : e[0] == 'TIME_OUT'
@@ -40,6 +44,8 @@ class Idle:
 
     @staticmethod
     def exit(archery_cat, e):
+        if space_down(e):
+            archery_cat.fire_arrow()
         print("Idle exit")
 
     @staticmethod
@@ -64,6 +70,7 @@ class Run:
         print("Run enter")
     @staticmethod
     def exit(archery_cat, e):
+
         print("Run exit")
 
     @staticmethod
@@ -92,7 +99,7 @@ class StateMachine:
         self.archery_cat = archery_cat
         self.cur_state = Idle
         self.transitions = {
-            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run},
+            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Idle},
             Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle}
         }
 
@@ -121,7 +128,7 @@ class Archery_cat:
         self.x, self.y = 400, 70
         self.frame = 0
         self.action = 0
-        self.dir = 0
+        self.dir = 1
         self.image_Idle = load_image('resource/Archery/Idle.png')
         self.image_Run = load_image('resource/Archery/cat.png')
         self.state_machine = StateMachine(self)
@@ -135,3 +142,9 @@ class Archery_cat:
 
     def draw(self):
         self.state_machine.draw()
+
+    def fire_arrow(self):
+        arrow = Arrow(self.x, self.y, 7)
+
+        game_world.add_object(arrow, 1)
+
