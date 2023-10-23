@@ -1,7 +1,9 @@
 from pico2d import *
 
+from archery_cat import Archery_cat
 from start_screen import Start_screen
 from start_screen import Start_back
+from archery_background import Archery_background
 
 
 # Game object class here
@@ -16,11 +18,13 @@ def handle_events():
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
-
+        else:
+            archery_cat.handle_event(event)
 
 def reset_world():
     global running
     global world
+    global archery_cat
 
     running = True
     world = []
@@ -30,9 +34,12 @@ def reset_world():
     #
     # start_screen = Start_screen()
     # world.append(start_screen)
+    #
+    archery_background = Archery_background()
+    world.append(archery_background)
 
-
-
+    archery_cat = Archery_cat()
+    world.append(archery_cat)
 def update_world():
     for o in world:
         o.update()
@@ -46,7 +53,7 @@ def render_world():
     update_canvas()
 
 
-open_canvas()
+open_canvas(1000,600)
 reset_world()
 hide_lattice() # 격자 숨기기
 
