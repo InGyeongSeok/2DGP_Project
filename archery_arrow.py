@@ -1,5 +1,8 @@
 from pico2d import load_image
 
+import game_world
+
+
 class Arrow:
     image_green = None
     image_red = None
@@ -19,6 +22,6 @@ class Arrow:
         self.y += self.velocity
         # self.y = 200
 
-        # if self.x < 50 or self.x > 800 - 50:
-        #     game_world.remove_object(self)
+        if self.y > 500:
+            game_world.remove_object(self)
 

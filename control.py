@@ -5,6 +5,7 @@ from archery_cat import Archery_cat
 from start_screen import Start_screen
 from start_screen import Start_back
 from archery_background import Archery_background
+from target import Target_50, Target_100
 
 
 # Game object class here
@@ -28,17 +29,32 @@ def create_world():
 
     running = True
 
+    #스타트 화면
     # start_back = Start_back()
     # world.append(start_back)
     #
     # start_screen = Start_screen()
     # world.append(start_screen)
-    #
+
     archery_background = Archery_background()
     game_world.add_object(archery_background)
 
     archery_cat = Archery_cat()
     game_world.add_object(archery_cat)
+
+    # target_50 = [Target_50 for i in range(11)]
+    # target_50 = Target_50()
+    # for i in range(11):
+    #     game_world.add_object(target_50[i])
+    # game_world.add_object(target_50)
+
+
+    target_50 = Target_50()
+    game_world.add_object(target_50)
+
+    target_100 = Target_100()
+    game_world.add_object(target_100)
+
 def update_world():
     game_world.update()
 

@@ -46,13 +46,11 @@ class Idle:
     def exit(archery_cat, e):
         if space_down(e):
             archery_cat.fire_arrow()
-        print("Idle exit")
 
     @staticmethod
     def do(archery_cat):
         archery_cat.frame = (archery_cat.frame + 1) % 8
 
-        print("Idle do")
 
     @staticmethod
     def draw(archery_cat):
@@ -67,17 +65,14 @@ class Run:
             archery_cat.dir, archery_cat.action = 1, 0
         elif left_down(e) or right_up(e):  # 왼쪽으로 RUN
             archery_cat.dir, archery_cat.action = -1, 1
-        print("Run enter")
     @staticmethod
     def exit(archery_cat, e):
-
-        print("Run exit")
+        pass
 
     @staticmethod
     def do(archery_cat):
         archery_cat.frame = (archery_cat.frame + 1) % 60
         archery_cat.x += archery_cat.dir * 3
-        print("Run do")
         pass
 
     @staticmethod
