@@ -11,25 +11,27 @@ class Target_50:
 
         self.x, self.y = random.randint(100, 900), random.randint(200, 300)
         self.frame = 0
+        self.sizex = 45
+        self.sizey = 55
 
     def draw(self):
         if self.frame < 15:
-            self.image.clip_draw(1, 0, 7, 17, self.x , self.y, 40, 40)
+            self.image.clip_draw(1, 0, 7, 17, self.x , self.y, self.sizex, self.sizey)
 
         elif self.frame < 30:
-            self.image.clip_draw(19, 0, 7, 20, self.x, self.y, 40, 40)
+            self.image.clip_draw(19, 0, 7, 20, self.x, self.y, self.sizex, self.sizey)
 
         elif self.frame < 45:
-            self.image.clip_draw(36, 0, 7, 20, self.x, self.y, 40, 40)
+            self.image.clip_draw(36, 0, 7, 20, self.x, self.y, self.sizex, self.sizey)
 
         elif self.frame < 60:
-            self.image.clip_draw(50, 0, 13, 20, self.x, self.y, 40, 40)
+            self.image.clip_draw(50, 0, 13, 20, self.x, self.y, self.sizex, self.sizey)
 
         elif self.frame < 75:
-            self.image.clip_draw(65, 0, 17, 20, self.x, self.y, 40, 40)
+            self.image.clip_draw(65, 0, 17, 20, self.x, self.y, self.sizex, self.sizey)
 
         elif self.frame >= 75:
-            self.image.clip_draw(83, 0, 17, 20, self.x, self.y, 40, 40)
+            self.image.clip_draw(83, 0, 17, 20, self.x, self.y, self.sizex, self.sizey)
 
     def update(self):
         self.frame = self.frame + 1
@@ -44,7 +46,7 @@ class Target_100:
             Target_100.image = load_image('resource/Archery/100.png')
 
         self.x, self.y = random.randint(100, 900), random.randint(300, 500)
-
+        self.dirx = random.randint(0,1);
         self.frame = 0
 
     def draw(self):
@@ -56,6 +58,10 @@ class Target_100:
         # self.y = 200
         # self.frame = 30
         self.frame = (self.frame + 1)
+        if self.dirx == 0:
+            self.x += 1
+        else:
+            self.x -= 1
 
         # if self.y > 500:
         #     game_world.remove_object(self)

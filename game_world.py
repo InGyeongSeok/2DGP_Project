@@ -9,6 +9,9 @@ objects = [[], [], []]
 def add_object(o, depth= 0):
     objects[depth].append(o)
 
+def add_objects(ol, depth= 0):
+    objects[depth] += ol
+
 # 월드를 업데이트하는, 객체들을 모두 업데이트하는 함
 
 def update():
@@ -30,4 +33,8 @@ def remove_object(o):
         if o in layer:
             layer.remove(o)
             return
-    raise ValueError('없는데 왜 지우려구?')
+    raise ValueError('Cannot delete non existing object')
+
+def clear():
+    for layer in objects:
+        layer.clear()
