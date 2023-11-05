@@ -6,9 +6,6 @@ from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK
 import game_world
 from archery_arrow import Arrow
 
-
-# from pico2d import get_time, load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT
-
 # state event check
 # ( state event type, event value )
 
@@ -72,7 +69,7 @@ class Run:
     @staticmethod
     def do(archery_cat):
         archery_cat.frame = (archery_cat.frame + 1) % 60
-        archery_cat.x += archery_cat.dir * 3
+        archery_cat.x += archery_cat.dir * 1.5
         pass
 
     @staticmethod

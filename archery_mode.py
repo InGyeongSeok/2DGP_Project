@@ -7,7 +7,7 @@ import title_mode
 
 from archery_background import Archery_background
 from archery_target import Target_50, Target_100
-from archery_cat import Archery_cat
+from archery_hero import Archery_cat
 # Game object class here
 
 
@@ -26,16 +26,16 @@ def init():
     global archery_cat
 
     archery_background = Archery_background()
-    game_world.add_object(archery_background)
+    game_world.add_object(archery_background, 0)
 
     archery_cat = Archery_cat()
-    game_world.add_object(archery_cat)
+    game_world.add_object(archery_cat, 0)
 
     target_50 = [Target_50() for i in range(5)]
-    game_world.add_objects(target_50)
+    game_world.add_objects(target_50, 1)
 
     target_100 = [Target_100() for i in range(3)]
-    game_world.add_objects(target_100)
+    game_world.add_objects(target_100, 0)
 
     # target_50 = Target_50()
     # game_world.add_object(target_50)

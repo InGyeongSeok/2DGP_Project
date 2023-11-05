@@ -45,7 +45,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         elif event.type == SDL_MOUSEBUTTONDOWN:
-            game_framework.change_mode(play_mode)
+            game_framework.change_mode(archery_mode)
 
 
 def pause():

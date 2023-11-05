@@ -59,9 +59,9 @@ class Target_100:
         # self.frame = 30
         self.frame = (self.frame + 1)
         if self.dirx == 0:
-            self.x += 1
+            self.x += 0.5
         else:
-            self.x -= 1
+            self.x -= 0.5
 
         # if self.y > 500:
         #     game_world.remove_object(self)
