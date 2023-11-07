@@ -21,17 +21,17 @@ class Archery_background:
 
         for i in range(20):
             for j in range(5):
-                if self.frame < 30:
+                if self.frame < 120:
                     self.image_ocean.clip_draw(0, 0, 48, 48, 24 + 72 * i, 160 + 72 * j, 100, 100)
                 else:
                     self.image_ocean.clip_draw(61, 0, 48, 48, 24 + 72 * i, 160 + 72 * j, 100, 100)
 
         for i in range(22):
-                if self.frame < 30:
+                if self.frame <120:
                     self.image_wave.clip_draw(0, 0, 16, 17, 24 + 48 * i, 100, 50, 50)
                 else:
                     self.image_wave.clip_draw(19, 0, 16, 17, 24 + 48 * i, 100, 50, 50)
 
     def update(self):
-        self.frame = (self.frame + 1) % 60
+        self.frame = (self.frame + 1) % 240
         pass
