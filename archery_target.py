@@ -1,4 +1,4 @@
-from pico2d import load_image, draw_rectangle
+from pico2d import load_image, draw_rectangle, clamp
 import random
 import game_world
 import archery_mode
@@ -34,10 +34,10 @@ class Target_50:
         elif self.frame >= 75:
             self.image.clip_draw(83, 0, 17, 20, self.x, self.y, self.sizex, self.sizey)
 
-        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+        # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
-        self.frame = self.frame + 1
+        self.frame = self.frame + 0.3
 
     def get_bb(self):
         return self.x - 20, self.y - 30, self.x + 20, self.y + 30
@@ -61,25 +61,23 @@ class Target_100:
             Target_100.image = load_image('resource/Archery/100.png')
 
         self.x, self.y = random.randint(100, 900), random.randint(300, 500)
-        self.dirx = random.randint(0,1);
-        self.frame = 0
+        self.dirx = random.choice([-1, 1])
 
     def draw(self):
 
         self.image.clip_draw(2, 0, 20, 30, self.x , self.y, 70, 90)
-        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+        # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
     def update(self):
         # self.y += self.velocity
         # self.y = 200
         # self.frame = 30
-        self.frame = (self.frame + 1)
-        if self.dirx == 0:
-            self.x += 0.5
-        else:
-            self.x -= 0.5
+        self.x = clamp(25, self.x, 1000-25)
+        self.x += self.dirx * 0.25
 
-        # if self.y > 500:
-        #     game_world.remove_object(self)
+        if self.x > 975:
+            self.dirx = -1
+        elif self.x <25:
+            self.dirx = 1
 
     def get_bb(self):
         return self.x - 30, self.y - 45, self.x + 30, self.y + 45
