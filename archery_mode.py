@@ -24,7 +24,9 @@ def handle_events():
 
 def init():
     global archery_cat
+    global archery_score
 
+    archery_score = 0
     archery_background = Archery_background()
     game_world.add_object(archery_background, 0)
 
@@ -32,7 +34,7 @@ def init():
     game_world.add_object(archery_cat, 0)
 
     target_50 = [Target_50() for i in range(5)]
-    game_world.add_objects(target_50, 1)
+    game_world.add_objects(target_50, 0)
 
     target_100 = [Target_100() for i in range(3)]
     game_world.add_objects(target_100, 0)
@@ -43,10 +45,17 @@ def init():
     # target_100 = Target_100()
     # game_world.add_object(target_100)
 
+    for s_score in target_50:
+        game_world.add_collision_pair('s_score:arrow', s_score, None)
 
+    for b_score in target_100:
+        game_world.add_collision_pair('b_score:arrow', b_score, None)
 
 def update():
     game_world.update()
+    game_world.handle_collision()
+
+
 
 
 def draw():

@@ -1,6 +1,7 @@
-from pico2d import load_image
+from pico2d import load_image, draw_rectangle
 import random
 import game_world
+import archery_mode
 
 class Target_50:
     image = None
@@ -33,10 +34,24 @@ class Target_50:
         elif self.frame >= 75:
             self.image.clip_draw(83, 0, 17, 20, self.x, self.y, self.sizex, self.sizey)
 
+        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+
     def update(self):
         self.frame = self.frame + 1
 
-        #충돌처리 해야함!!
+    def get_bb(self):
+        return self.x - 20, self.y - 30, self.x + 20, self.y + 30
+
+    def handle_collision(self, group, other):
+
+        if group == 's_score:arrow':
+            game_world.remove_object(self)
+            archery_mode.archery_score += 50
+            # print(archery_mode.archery_score)
+            # print("s_score")
+
+        pass
+
 
 class Target_100:
     image = None
@@ -52,7 +67,7 @@ class Target_100:
     def draw(self):
 
         self.image.clip_draw(2, 0, 20, 30, self.x , self.y, 70, 90)
-
+        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
     def update(self):
         # self.y += self.velocity
         # self.y = 200
@@ -65,3 +80,15 @@ class Target_100:
 
         # if self.y > 500:
         #     game_world.remove_object(self)
+
+    def get_bb(self):
+        return self.x - 30, self.y - 45, self.x + 30, self.y + 45
+
+    def handle_collision(self, group, other):
+
+        if group == 'b_score:arrow':
+            game_world.remove_object(self)
+            archery_mode.archery_score += 100
+            # print(archery_mode.archery_score)
+            # print("b_score")
+        pass

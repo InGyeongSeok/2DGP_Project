@@ -1,8 +1,9 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
 
-from pico2d import load_image, get_time
+from pico2d import load_image, get_time, load_font
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_a
 
+import archery_mode
 import game_world
 from archery_arrow import Arrow
 
@@ -69,7 +70,7 @@ class Run:
     @staticmethod
     def do(archery_cat):
         archery_cat.frame = (archery_cat.frame + 1) % 60
-        archery_cat.x += archery_cat.dir * 1.5
+        archery_cat.x += archery_cat.dir * 3
         pass
 
     @staticmethod
@@ -117,6 +118,7 @@ class StateMachine:
 
 class Archery_cat:
     def __init__(self):
+        self.font = load_font('ENCR10B.TTF', 20)
         self.x, self.y = 400, 70
         self.frame = 0
         self.action = 0
@@ -125,7 +127,7 @@ class Archery_cat:
         self.image_Run = load_image('resource/Archery/cat.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
-
+        
     def update(self):
         self.state_machine.update()
 
@@ -134,9 +136,13 @@ class Archery_cat:
 
     def draw(self):
         self.state_machine.draw()
-
+        self.font.draw(self.x - 10, self.y + 50, f'{archery_mode.archery_score:02d}', (255, 255, 0))
     def fire_arrow(self):
         arrow = Arrow(self.x, self.y, 7)
-
         game_world.add_object(arrow, 1)
+        game_world.add_collision_pair('s_score:arrow', None, arrow)
+        game_world.add_collision_pair('b_score:arrow', None, arrow)
+
+
+
 
