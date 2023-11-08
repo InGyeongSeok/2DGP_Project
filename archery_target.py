@@ -60,7 +60,7 @@ class Target_100:
         if Target_100.image == None:
             Target_100.image = load_image('resource/Archery/100.png')
 
-        self.x, self.y = random.randint(100, 900), random.randint(300, 500)
+        self.x, self.y = random.randint(100, 900), random.randint(350, 500)
         self.dirx = random.choice([-1, 1])
 
     def draw(self):
@@ -72,7 +72,7 @@ class Target_100:
         # self.y = 200
         # self.frame = 30
         self.x = clamp(25, self.x, 1000-25)
-        self.x += self.dirx * 0.25
+        self.x += self.dirx * 0.2
 
         if self.x > 975:
             self.dirx = -1
@@ -90,3 +90,80 @@ class Target_100:
             # print(archery_mode.archery_score)
             # print("b_score")
         pass
+
+
+class Target_bomb:
+    image = None
+    bomb_image = None
+    bomb_image1 = None
+    bomb_image2 = None
+    bomb_image3 = None
+    bomb_image4 = None
+    bomb_image5 = None
+    def __init__(self):
+        if Target_bomb.image == None:
+            Target_bomb.image = load_image('resource/Archery/bomb_boat.png')
+        if Target_bomb.bomb_image == None:
+            Target_bomb.bomb_image = load_image('resource/Archery/bomb0.png')
+            Target_bomb.bomb_image1 = load_image('resource/Archery/bomb1.png')
+            Target_bomb.bomb_image2 = load_image('resource/Archery/bomb2.png')
+            Target_bomb.bomb_image3 = load_image('resource/Archery/bomb3.png')
+            Target_bomb.bomb_image4 = load_image('resource/Archery/bomb4.png')
+            Target_bomb.bomb_image5 = load_image('resource/Archery/bomb5.png')
+
+        self.x, self.y = random.randint(100, 900), random.randint(350,500 )
+        self.frame = 0
+        self.sizex = 45
+        self.sizey = 65
+        self.flag = 0
+        self.dirx = random.choice([-1, 1])
+    def draw(self):
+
+        if self.flag > 0:
+            if self.flag < 5:
+                self.bomb_image.clip_draw(0, 0, 38, 36, self.x, self.y)
+            elif self.flag < 20:
+                self.bomb_image1.clip_draw(0, 0, 62, 62, self.x, self.y)
+            elif self.flag < 30:
+                self.bomb_image2.clip_draw(0, 0, 65, 62, self.x, self.y)
+            elif self.flag < 40:
+                self.bomb_image3.clip_draw(0, 0, 62, 57, self.x, self.y)
+            elif self.flag < 50:
+                self.bomb_image4.clip_draw(0, 0, 63, 61, self.x, self.y)
+            elif self.flag < 60:
+                self.bomb_image5.clip_draw(0, 0, 55, 59, self.x, self.y)
+
+        elif self.frame < 70:
+            self.image.clip_draw(30, 0, 20, 30, self.x , self.y, self.sizex, self.sizey)
+        else:
+            self.image.clip_draw(60, 0, 20, 30, self.x , self.y, self.sizex, self.sizey)
+        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+
+    def update(self):
+        if self.flag == 0:
+            self.x = clamp(25, self.x, 1000 - 25)
+            self.x += self.dirx * 0.2
+            ###### 제출할 때는 범위 제한 없이 만들기!
+            if self.x > 975:
+                self.dirx = -1
+            elif self.x < 25:
+                self.dirx = 1
+
+            self.frame = (self.frame + 1) % 140
+        if self.flag > 0:
+            self.flag += 0.5
+        if self.flag == 80:
+            game_world.remove_object(self)
+
+
+    def get_bb(self):
+        return self.x - 25, self.y - 40, self.x + 25, self.y + 30
+
+    def handle_collision(self, group, other):
+
+        if group == 'bomb:arrow':
+            self.flag = 1
+            # print(archery_mode.archery_score)
+            print("bomb")
+
+            pass

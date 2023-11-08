@@ -6,7 +6,7 @@ import game_world
 import title_mode
 
 from archery_background import Archery_background
-from archery_target import Target_50, Target_100
+from archery_target import Target_50, Target_100, Target_bomb
 from archery_hero import Archery_cat
 # Game object class here
 
@@ -39,17 +39,17 @@ def init():
     target_100 = [Target_100() for i in range(3)]
     game_world.add_objects(target_100, 0)
 
-    # target_50 = Target_50()
-    # game_world.add_object(target_50)
-
-    # target_100 = Target_100()
-    # game_world.add_object(target_100)
+    target_bomb = [Target_bomb() for i in range(3)]
+    game_world.add_objects(target_bomb, 0)
 
     for s_score in target_50:
         game_world.add_collision_pair('s_score:arrow', s_score, None)
 
     for b_score in target_100:
         game_world.add_collision_pair('b_score:arrow', b_score, None)
+
+    for bomb in target_bomb:
+        game_world.add_collision_pair('bomb:arrow', bomb, None)
 
 def update():
     game_world.update()

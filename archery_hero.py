@@ -122,7 +122,7 @@ class StateMachine:
 class Archery_cat:
     def __init__(self):
         self.font = load_font('ENCR10B.TTF', 20)
-        self.x, self.y = 400, 70
+        self.x, self.y = 400, 55
         self.frame = 0
         self.action = 0
         self.dir = 1
@@ -139,13 +139,14 @@ class Archery_cat:
 
     def draw(self):
         self.state_machine.draw()
-        self.font.draw(self.x - 10, self.y + 50, f'{archery_mode.archery_score:02d}', (255, 255, 0))
+        self.font.draw(self.x - 10, self.y + 48, f'{archery_mode.archery_score:02d}', (255, 255, 0))
 
     def fire_arrow(self):
         arrow = Arrow(self.x, self.y)
         game_world.add_object(arrow, 1)
         game_world.add_collision_pair('s_score:arrow', None, arrow)
         game_world.add_collision_pair('b_score:arrow', None, arrow)
+        game_world.add_collision_pair('bomb:arrow', None, arrow)
 
 
 
