@@ -28,13 +28,8 @@ class Start_play:
         self.image = load_image('resource/play.png')
 
     def draw(self):
-        if self.frame < 40:
-            self.image.clip_draw(0, 0, 90, 90, 500, 260, 200, 200)
-        else:
-            self.image.clip_draw(80, 0, 90, 90, 480, 260, 200, 200)
-
-
+        self.image.clip_draw(80 * (self.frame // 120), 0, 90, 90, 500 + -20 * (self.frame // 120), 260, 200, 200)
 
     def update(self):
-        self.frame = (self.frame + 1) % 80
+        self.frame = (self.frame + 1) % 240
         pass

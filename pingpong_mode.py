@@ -5,6 +5,7 @@ import game_framework
 import game_world
 import title_mode
 from pingpong_background import Pingpong_background
+from pingpong_hero import Pingpong_cat
 
 
 def handle_events():
@@ -15,12 +16,18 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
+        else:
+            pingpong_cat.handle_event(event)
 
 
 def init():
+    global pingpong_cat
 
     pingpong_background = Pingpong_background()
     game_world.add_object(pingpong_background, 0)
+
+    pingpong_cat = Pingpong_cat()
+    game_world.add_object(pingpong_cat, 0)
 
 
 

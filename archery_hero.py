@@ -47,7 +47,7 @@ class Idle:
     @staticmethod
     def enter(archery_cat, e):
         archery_cat.frame = 0
-        archery_cat.wait_time = get_time()  # pico2d import 필요
+        # archery_cat.wait_time = get_time()  # pico2d import 필요
 
     @staticmethod
     def exit(archery_cat, e):
@@ -56,8 +56,7 @@ class Idle:
 
     @staticmethod
     def do(archery_cat):
-        archery_cat.frame = (archery_cat.frame + 1) % 8
-
+        pass
 
     @staticmethod
     def draw(archery_cat):

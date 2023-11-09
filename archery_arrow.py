@@ -15,7 +15,6 @@ class Arrow:
 
     def draw(self):
         self.image_green.clip_draw(0, 0, 15, 20, self.x + 5, self.y, 30, 30)
-        # self.image_red.clip_draw(19, 0, 15, 20, self.x + 5, self.y, 30, 30)
         # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):

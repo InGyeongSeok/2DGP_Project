@@ -113,31 +113,31 @@ class Target_bomb:
 
         self.x, self.y = random.randint(100, 900), random.randint(350,500 )
         self.frame = 0
-        self.sizex = 45
-        self.sizey = 65
+        self.sizex = 150
+        self.sizey = 150
         self.flag = 0
         self.dirx = random.choice([-1, 1])
     def draw(self):
 
         if self.flag > 0:
             if self.flag < 5:
-                self.bomb_image.clip_draw(0, 0, 38, 36, self.x, self.y)
+                self.bomb_image.clip_draw(0, 0, 38, 36, self.x, self.y, self.sizex, self.sizey)
             elif self.flag < 20:
-                self.bomb_image1.clip_draw(0, 0, 62, 62, self.x, self.y)
+                self.bomb_image1.clip_draw(0, 0, 62, 62, self.x, self.y, self.sizex, self.sizey)
             elif self.flag < 30:
-                self.bomb_image2.clip_draw(0, 0, 65, 62, self.x, self.y)
+                self.bomb_image2.clip_draw(0, 0, 65, 62, self.x, self.y, self.sizex, self.sizey)
             elif self.flag < 40:
-                self.bomb_image3.clip_draw(0, 0, 62, 57, self.x, self.y)
+                self.bomb_image3.clip_draw(0, 0, 62, 57, self.x, self.y, self.sizex, self.sizey)
             elif self.flag < 50:
-                self.bomb_image4.clip_draw(0, 0, 63, 61, self.x, self.y)
+                self.bomb_image4.clip_draw(0, 0, 63, 61, self.x, self.y, self.sizex, self.sizey)
             elif self.flag < 60:
-                self.bomb_image5.clip_draw(0, 0, 55, 59, self.x, self.y)
+                self.bomb_image5.clip_draw(0, 0, 55, 59, self.x, self.y, self.sizex, self.sizey)
 
         elif self.frame < 70:
-            self.image.clip_draw(30, 0, 20, 30, self.x , self.y, self.sizex, self.sizey)
+            self.image.clip_draw(30, 0, 20, 30, self.x , self.y , 60, 75)
         else:
-            self.image.clip_draw(60, 0, 20, 30, self.x , self.y, self.sizex, self.sizey)
-        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+            self.image.clip_draw(60, 0, 20, 30, self.x , self.y,60, 75)
+        # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
         if self.flag == 0:
