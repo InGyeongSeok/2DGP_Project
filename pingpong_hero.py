@@ -3,10 +3,8 @@
 from pico2d import load_image, get_time, load_font, clamp
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_a, SDLK_UP, SDLK_DOWN
 
-import archery_mode
 import game_framework
 import game_world
-from archery_arrow import Arrow
 
 
 # state event check
@@ -87,7 +85,7 @@ class Run:
 
     @staticmethod
     def enter(pingpong_cat, e):
-        print("Run enter")
+        # print("Run enter")
         if right_down(e) or left_up(e):  # 오른쪽으로 RUN
             pingpong_cat.dirx = 0.5
             pingpong_cat.diry = 0
