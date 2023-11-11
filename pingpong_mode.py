@@ -1,6 +1,7 @@
 from pico2d import *
 
-
+import archery_mode
+import climbing_mode
 import game_framework
 import game_world
 import title_mode
@@ -16,6 +17,10 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
+        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_1:
+            game_framework.change_mode(archery_mode)
+        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_2:
+            game_framework.change_mode(climbing_mode)
         else:
             pingpong_cat.handle_event(event)
 

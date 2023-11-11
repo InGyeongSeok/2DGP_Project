@@ -25,7 +25,7 @@ class Hold_pink:
         screen_y = self.y - server.background.window_bottom
         self.image.clip_draw(0, 0, 13, 13, screen_x, screen_y, self.sizex, self.sizey)
 
-        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+        # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
         pass
@@ -65,7 +65,7 @@ class Hold_green:
         screen_y = self.y - server.background.window_bottom
         self.image.clip_draw(0, 15, 13, 13, screen_x, screen_y, self.sizex, self.sizey)
 
-        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+        # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
         pass
@@ -76,7 +76,7 @@ class Hold_green:
         screen_y = self.y - server.background.window_bottom
         return screen_x - 10, screen_y -20, screen_x + 10, screen_y + 10
     def handle_collision(self, group, other):
-        print("hold_green!!")
+        # print("hold_green!!")
         if group == 'green:hero':
             if self.collide_time == 0:
                 self.collide_time = get_time()

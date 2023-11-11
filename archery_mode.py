@@ -1,13 +1,16 @@
 from pico2d import *
 
-
+import climbing_mode
 import game_framework
 import game_world
+import pingpong_mode
 import title_mode
 
 from archery_background import Archery_background
 from archery_target import Target_50, Target_100, Target_bomb
 from archery_hero import Archery_cat
+from gametimer import Gametimer
+
 # Game object class here
 
 
@@ -19,12 +22,18 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
-        else:
+        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_2:
+            game_framework.change_mode(climbing_mode)
+        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_3:
+            game_framework.change_mode(pingpong_mode)
+        elif get_time() - wait_time > 3 and get_time() - wait_time < 15:
             archery_cat.handle_event(event)
 
 def init():
     global archery_cat
     global archery_score
+    global wait_time
+    wait_time = get_time()
 
     archery_score = 0
     archery_background = Archery_background()
@@ -42,6 +51,10 @@ def init():
     target_bomb = [Target_bomb() for i in range(3)]
     game_world.add_objects(target_bomb, 0)
 
+    gametimer = Gametimer(15)
+    game_world.add_object(gametimer, 2)
+
+
     for s_score in target_50:
         game_world.add_collision_pair('s_score:arrow', s_score, None)
 
@@ -50,6 +63,8 @@ def init():
 
     for bomb in target_bomb:
         game_world.add_collision_pair('bomb:arrow', bomb, None)
+
+
 
 def update():
     game_world.update()

@@ -78,8 +78,7 @@ class Idle:
         climbing_cat.x = clamp(45, climbing_cat.x, server.background.w -45)
         climbing_cat.y = clamp(45, climbing_cat.y, server.background.h - 275)
         climbing_cat.frame = (climbing_cat.frame + 1) % 200
-        print(climbing_cat.x)
-        print(climbing_cat.y)
+
 
         if climbing_cat.y > 130 and climbing_cat.y < 1615:
             climbing_cat.y -= 1
@@ -108,8 +107,6 @@ class Hold:
         climbing_cat.y = clamp(45, climbing_cat.y, server.background.h - 275)
         climbing_cat.frame = (climbing_cat.frame + 1) % 300
 
-        print(climbing_cat.x)
-        print(climbing_cat.y)
         climbing_cat.x = climbing_hold.holdx - 5
         climbing_cat.y = climbing_hold.holdy - 30
         pass
@@ -217,6 +214,7 @@ class Run:
 
 class StateMachine:
     def __init__(self, climbing_cat):
+
         self.climbing_cat = climbing_cat
         self.cur_state = Idle
         self.transitions = {
@@ -235,9 +233,11 @@ class StateMachine:
         self.cur_state.enter(self.climbing_cat, ('NONE', 0))
 
     def update(self):
+
         self.cur_state.do(self.climbing_cat)
 
     def handle_event(self, e):
+
         for check_event, next_state in self.transitions[self.cur_state].items():
             if check_event(e):
                 self.cur_state.exit(self.climbing_cat, e)
@@ -253,6 +253,7 @@ class StateMachine:
 
 class Climbing_cat:
     def __init__(self):
+
         self.font = load_font('ENCR10B.TTF', 20)
         self.x, self.y =500, 45
         self.frame = 0
@@ -276,9 +277,10 @@ class Climbing_cat:
         self.state_machine.handle_event(('INPUT', event))
 
     def draw(self):
-        self.state_machine.draw()
+
+            self.state_machine.draw()
         # self.font.draw(self.x - 10, self.y + 48, f'{archery_mode.archery_score:02d}', (255, 255, 0))
-        draw_rectangle(*self.get_bb()) #튜플을 풀어해쳐서 각각 인자로 전달
+        # draw_rectangle(*self.get_bb()) #튜플을 풀어해쳐서 각각 인자로 전달
 
     def get_bb(self):
         screen_x = self.x - server.background.window_left

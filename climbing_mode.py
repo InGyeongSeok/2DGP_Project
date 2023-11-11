@@ -2,13 +2,16 @@ import random
 
 from pico2d import *
 
+import archery_mode
 import game_framework
 import game_world
+import pingpong_mode
 import title_mode
 from climbing_background import Climbing_background
 from climbing_hero import Climbing_cat
 import server
 from climbing_hold import Hold_pink, Hold_green
+from gametimer import Gametimer
 
 
 def handle_events():
@@ -19,19 +22,29 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
-        else:
+        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_1:
+            game_framework.change_mode(archery_mode)
+        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_3:
+            game_framework.change_mode(pingpong_mode)
+        elif get_time() - wait_time > 3 and get_time() - wait_time < 30:
             server.climbing_cat.handle_event(event)
 
 
 
 def init():
     global climbing_cat
+    global wait_time
+    wait_time = get_time()
 
     server.background = Climbing_background()
     game_world.add_object(server.background, 0)
 
     server.climbing_cat = Climbing_cat()
     game_world.add_object(server.climbing_cat, 1)
+
+    gametimer = Gametimer(30)
+    game_world.add_object(gametimer, 2)
+
 
     # hold_pink = [Hold_pink() for i in range(15)]
     hold_green = [Hold_green() for i in range(10)]
