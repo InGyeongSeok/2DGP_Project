@@ -1,3 +1,5 @@
+import random
+
 from pico2d import *
 
 import game_framework
@@ -5,6 +7,8 @@ import game_world
 import title_mode
 from climbing_background import Climbing_background
 from climbing_hero import Climbing_cat
+import server
+from climbing_hold import Hold_pink, Hold_green
 
 
 def handle_events():
@@ -16,21 +20,61 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
         else:
-            climbing_cat.handle_event(event)
+            server.climbing_cat.handle_event(event)
 
 
 
 def init():
     global climbing_cat
 
-    climbing_background = Climbing_background()
-    game_world.add_object(climbing_background, 0)
+    server.background = Climbing_background()
+    game_world.add_object(server.background, 0)
 
-    climbing_cat = Climbing_cat()
-    game_world.add_object(climbing_cat, 0)
+    server.climbing_cat = Climbing_cat()
+    game_world.add_object(server.climbing_cat, 1)
+
+    # hold_pink = [Hold_pink() for i in range(15)]
+    hold_green = [Hold_green() for i in range(10)]
+    hold_pink = []
+    for i in range(3):
+        for j in range(13):
+            hold_pink.append(Hold_pink(i * 400 + random.randint(50, 120), j * 80 + 200))
+
+    hold_pink.append(Hold_pink(200, 1200))
+    hold_pink.append(Hold_pink(350, 1250))
+    hold_pink.append(Hold_pink(300, 1300))
+    hold_pink.append(Hold_pink(400, 1350))
+    hold_pink.append(Hold_pink(430, 1420))
+    hold_pink.append(Hold_pink(390, 1500))
+    hold_pink.append(Hold_pink(500, 1550))
+    hold_pink.append(Hold_pink(620, 1550))
+    hold_pink.append(Hold_pink(600, 1500))
+    hold_pink.append(Hold_pink(700, 1420))
+
+    hold_green.append(Hold_green(350, 1450))
+    hold_green.append(Hold_green(550, 1400))
+    hold_green.append(Hold_green(600, 1300))
+    hold_green.append(Hold_green(680, 1500))
+
+    for i in range(2):
+        for j in range(3):
+            hold_green.append(Hold_green(i * 800 + random.randint(50, 120), j * 100 + 1050))
+
+    game_world.add_objects(hold_pink, 0)
+    game_world.add_objects(hold_green, 0)
+
+    for pink in hold_pink:
+        game_world.add_collision_pair('pink:hero', None, pink)
+    for green in hold_green:
+        game_world.add_collision_pair('green:hero', None, green)
+
+    game_world.add_collision_pair('pink:hero', server.climbing_cat, None)
+    game_world.add_collision_pair('green:hero', server.climbing_cat, None)
+
 
 def update():
     game_world.update()
+    game_world.handle_collision()
 
 
 def draw():

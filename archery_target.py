@@ -164,6 +164,6 @@ class Target_bomb:
         if group == 'bomb:arrow':
             self.flag = 1
             # print(archery_mode.archery_score)
-            print("bomb")
+            # print("bomb")
 
             pass
