@@ -37,7 +37,7 @@ class Target_50:
         # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
-        self.frame = self.frame + 0.3
+        self.frame = self.frame + 0.1
 
     def get_bb(self):
         return self.x - 20, self.y - 30, self.x + 20, self.y + 30
@@ -72,7 +72,7 @@ class Target_100:
         # self.y = 200
         # self.frame = 30
         self.x = clamp(25, self.x, 1000-25)
-        self.x += self.dirx * 0.2
+        self.x += self.dirx * 0.1
 
         if self.x > 975:
             self.dirx = -1
@@ -133,7 +133,7 @@ class Target_bomb:
             elif self.flag < 60:
                 self.bomb_image5.clip_draw(0, 0, 55, 59, self.x, self.y, self.sizex, self.sizey)
 
-        elif self.frame < 70:
+        elif self.frame < 100:
             self.image.clip_draw(30, 0, 20, 30, self.x , self.y , 60, 75)
         else:
             self.image.clip_draw(60, 0, 20, 30, self.x , self.y,60, 75)
@@ -142,14 +142,14 @@ class Target_bomb:
     def update(self):
         if self.flag == 0:
             self.x = clamp(25, self.x, 1000 - 25)
-            self.x += self.dirx * 0.2
+            self.x += self.dirx * 0.1
             ###### 제출할 때는 범위 제한 없이 만들기!
             if self.x > 975:
                 self.dirx = -1
             elif self.x < 25:
                 self.dirx = 1
 
-            self.frame = (self.frame + 1) % 140
+            self.frame = (self.frame + 1) % 200
         if self.flag > 0:
             self.flag += 0.5
         if self.flag == 80:

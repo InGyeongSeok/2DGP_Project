@@ -29,7 +29,7 @@ def handle_events():
             game_framework.change_mode(archery_mode)
         elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_3:
             game_framework.change_mode(pingpong_mode)
-        elif get_time() - wait_time > 3 and get_time() - wait_time < 30:
+        elif get_time() - wait_time > 3 and get_time() - wait_time < 20:
             server.climbing_cat.handle_event(event)
 
 
@@ -46,7 +46,7 @@ def init():
     server.climbing_cat = Climbing_cat()
     game_world.add_object(server.climbing_cat, 1)
 
-    gametimer = Gametimer(30)
+    gametimer = Gametimer(20)
     game_world.add_object(gametimer, 2)
 
 
