@@ -9,7 +9,7 @@ import title_mode
 from archery_background import Archery_background
 from archery_target import Target_50, Target_100, Target_bomb
 from archery_hero import Archery_cat
-from gametimer import Gametimer
+from game_timer import Gametimer
 
 # Game object class here
 
@@ -69,8 +69,6 @@ def init():
 def update():
     game_world.update()
     game_world.handle_collision()
-
-
 
 
 def draw():

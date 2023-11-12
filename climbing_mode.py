@@ -11,8 +11,11 @@ from climbing_background import Climbing_background
 from climbing_hero import Climbing_cat
 import server
 from climbing_hold import Hold_pink, Hold_green
-from gametimer import Gametimer
+from climbing_snow import Climbing_snow
+from game_timer import Gametimer
 
+
+flag = 0
 
 def handle_events():
 
@@ -31,6 +34,7 @@ def handle_events():
 
 
 
+
 def init():
     global climbing_cat
     global wait_time
@@ -46,7 +50,15 @@ def init():
     game_world.add_object(gametimer, 2)
 
 
-    # hold_pink = [Hold_pink() for i in range(15)]
+    snow = [Climbing_snow(random.randint(0, 1000), random.randint(1200, 1600)) for i in range(5)]
+    # snow.append(Climbing_snow())
+    game_world.add_objects(snow, 1)
+
+    for s in snow:
+        game_world.add_collision_pair('snow:hero', None, s)
+    game_world.add_collision_pair('snow:hero', server.climbing_cat, None)
+
+
     hold_green = [Hold_green() for i in range(10)]
     hold_pink = []
     for i in range(3):
@@ -73,6 +85,7 @@ def init():
         for j in range(3):
             hold_green.append(Hold_green(i * 800 + random.randint(50, 120), j * 100 + 1050))
 
+
     game_world.add_objects(hold_pink, 0)
     game_world.add_objects(hold_green, 0)
 
@@ -86,9 +99,16 @@ def init():
 
 
 def update():
+    global flag
+    if get_time() - wait_time > 10 and flag == 0:
+        after_snow = [Climbing_snow(random.randint(0, 1000), random.randint(1200, 1600)) for i in range(5)]
+        game_world.add_objects(after_snow, 1)
+        for s in after_snow:
+            game_world.add_collision_pair('snow:hero', None, s)
+        game_world.add_collision_pair('snow:hero', server.climbing_cat, None)
+        flag = 1
     game_world.update()
     game_world.handle_collision()
-
 
 def draw():
     clear_canvas()

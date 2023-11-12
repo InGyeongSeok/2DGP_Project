@@ -46,6 +46,8 @@ def space_down(e):
 def time_out(e):
     return e[0] == 'TIME_OUT'
 
+def hold_out(e):
+    return e[0] == 'Hold_out'
 
 def hold(e):
     return e[0] == 'Hold'
@@ -117,6 +119,35 @@ class Hold:
 
         climbing_cat.image_jump.clip_draw(32 * (climbing_cat.frame // 100 + 3) + 1, 0, 21, 35, sx, sy , 70, 70)
 
+class Fall:
+
+    @staticmethod
+    def enter(climbing_cat, e):
+        climbing_cat.frame = 0
+
+        climbing_cat.wait_time = get_time()
+    @staticmethod
+    def exit(climbing_cat, e):
+        pass
+
+    @staticmethod
+    def do(climbing_cat):
+
+        climbing_cat.x = clamp(45, climbing_cat.x, server.background.w -45)
+        climbing_cat.y = clamp(45, climbing_cat.y, server.background.h - 275)
+        climbing_cat.frame = (climbing_cat.frame + 1) % 200
+
+
+        if climbing_cat.y > 130 and climbing_cat.y < 1615:
+            climbing_cat.y -= 1
+        if get_time() - climbing_cat.wait_time > 0.5:
+            climbing_cat.state_machine.handle_event(('TIME_OUT', 0))
+        pass
+
+    @staticmethod
+    def draw(climbing_cat):
+        sx, sy = climbing_cat.x - server.background.window_left, climbing_cat.y - server.background.window_bottom
+        climbing_cat.image_fall.clip_draw(39 * (climbing_cat.frame // 100), 0, 22, 32, sx, sy , 70, 80)
 
 class Jump:
 
@@ -219,14 +250,15 @@ class StateMachine:
         self.cur_state = Idle
         self.transitions = {
             Idle: {right_down: Run, left_down: Run, space_down: Jump,
-                   up_down: Run, down_down: Run, hold: Hold},
+                   up_down: Run, down_down: Run, hold:Hold ,  hold_out : Fall},
             Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle,
                   up_down: Idle, up_up: Idle, down_down: Idle, down_up: Idle, hold: Hold
-                  ,time_out: Idle},
+                  ,time_out: Idle,  hold_out : Fall},
             Jump: {right_down: Run, left_down: Run, left_up: Run, right_up: Run,
                    up_down: Run, up_up: Run, down_down: Run, down_up: Run,
-                   time_out: Idle},
-            Hold: {space_down: Jump, right_down: Run, left_down: Run, up_down: Run, down_down: Run}
+                   time_out: Idle,  hold_out : Fall},
+            Hold: {space_down: Jump, right_down: Run, left_down: Run, up_down: Run, down_down: Run, hold_out : Fall},
+            Fall:{time_out : Idle}
         }
 
     def start(self):
@@ -266,6 +298,7 @@ class Climbing_cat:
         self.image_up = load_image('resource/Climbing/back.png')
         self.image_down = load_image('resource/Climbing/front.png')
         self.image_jump = load_image('resource/Climbing/climb.png')
+        self.image_fall = load_image('resource/Climbing/fall.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
@@ -296,6 +329,9 @@ class Climbing_cat:
 
         if group == 'green:hero':
             self.state_machine.handle_event(('Hold', 0))
+
+        if group == 'snow:hero':
+            self.state_machine.handle_event(('Hold_out', 0))
 
 
 

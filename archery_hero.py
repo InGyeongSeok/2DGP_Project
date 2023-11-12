@@ -94,7 +94,7 @@ class StateMachine:
         self.archery_cat = archery_cat
         self.cur_state = Idle
         self.transitions = {
-            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Idle},
+            Idle: {right_down: Run, left_down: Run, right_up: Idle, left_up: Idle, space_down: Idle},
             Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle}
         }
 

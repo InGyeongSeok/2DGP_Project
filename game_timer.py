@@ -21,7 +21,7 @@ class Gametimer:
         elif get_time() - self.wait_time < 4:
             self.imagego.clip_draw(0, 0, 552, 336, 500, 300)
         elif get_time() - self.wait_time > self.time:
-            self.imagetime.clip_draw(0, 0, 1000, 600, 500, 300, 800, 500)
+            self.imagetime.clip_draw(0, 0, 1000, 600, 500, 300, 800, 550)
 
     def update(self):
         # if get_time() - self.wait_time > 90:
