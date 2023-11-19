@@ -18,7 +18,7 @@ class Arrow:
         # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
-        self.y += 1
+        self.y += 2
         # self.y = 200
 
         if self.y > 500:

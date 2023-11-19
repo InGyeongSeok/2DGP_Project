@@ -5,6 +5,7 @@ import game_framework
 import game_world
 import pingpong_mode
 import title_mode
+from archery_ai import Zombie
 
 from archery_background import Archery_background
 from archery_target import Target_50, Target_100, Target_bomb
@@ -26,7 +27,8 @@ def handle_events():
             game_framework.change_mode(climbing_mode)
         elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_3:
             game_framework.change_mode(pingpong_mode)
-        elif get_time() - wait_time > 3 and get_time() - wait_time < 15:
+        # elif get_time() - wait_time > 3 and get_time() - wait_time < 15:
+        else:
             archery_cat.handle_event(event)
 
 def init():
@@ -51,8 +53,8 @@ def init():
     target_bomb = [Target_bomb() for i in range(3)]
     game_world.add_objects(target_bomb, 0)
 
-    gametimer = Gametimer(15)
-    game_world.add_object(gametimer, 2)
+    # gametimer = Gametimer(15)
+    # game_world.add_object(gametimer, 2)
 
 
     for s_score in target_50:
@@ -64,6 +66,9 @@ def init():
     for bomb in target_bomb:
         game_world.add_collision_pair('bomb:arrow', bomb, None)
 
+    zombie = Zombie(300, 300)
+    game_world.add_object(zombie, 2)
+    game_world.add_collision_pair('zombie:ball', zombie, None)
 
 
 def update():
