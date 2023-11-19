@@ -117,7 +117,7 @@ class Hold:
     def draw(climbing_cat):
         sx, sy = climbing_cat.x - server.background.window_left, climbing_cat.y - server.background.window_bottom
 
-        climbing_cat.image_jump.clip_draw(32 * (climbing_cat.frame // 100 + 3) + 1, 0, 21, 35, sx, sy , 70, 70)
+        climbing_cat.image_jump.clip_draw(32 * (climbing_cat.frame // 100 + 3) + 1, 0, 21, 35, sx, sy , 90, 90)
 
 class Fall:
 

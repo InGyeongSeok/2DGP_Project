@@ -17,8 +17,8 @@ class Hold_pink:
         if self.x ==0 and self.y == 0:
             self.x ,self.y= random.randint(100, 900), random.randint(200, 1500)
 
-        self.sizex = 45
-        self.sizey = 55
+        self.sizex = 55
+        self.sizey = 65
 
     def draw(self):
         screen_x = self.x - server.background.window_left
@@ -56,8 +56,8 @@ class Hold_green:
         if self.x == 0 and self.y == 0:
             self.x ,  self.y= random.randint(100, 700), random.randint(500, 1300)
 
-        self.sizex = 45
-        self.sizey = 55
+        self.sizex = 55
+        self.sizey = 65
         self.collide_time = 0
 
     def draw(self):
