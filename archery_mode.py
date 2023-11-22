@@ -6,6 +6,7 @@ import game_world
 import pingpong_mode
 import title_mode
 from archery_ai import Zombie
+from archery_ai2 import Archery_ai
 
 from archery_background import Archery_background
 from archery_target import Target_50, Target_100, Target_bomb
@@ -66,9 +67,9 @@ def init():
     for bomb in target_bomb:
         game_world.add_collision_pair('bomb:arrow', bomb, None)
 
-    zombie = Zombie(300, 300)
-    game_world.add_object(zombie, 2)
-    game_world.add_collision_pair('zombie:ball', zombie, None)
+    archery_ai = Archery_ai()
+    game_world.add_object(archery_ai, 2)
+    # game_world.add_collision_pair('zombie:ball', zombie, None)
 
 
 def update():
