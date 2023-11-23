@@ -5,8 +5,7 @@ import game_framework
 import game_world
 import pingpong_mode
 import title_mode
-from archery_ai import Zombie
-from archery_ai2 import Archery_ai
+from archery_ai import Archery_ai
 
 from archery_background import Archery_background
 from archery_target import Target_50, Target_100, Target_bomb
@@ -36,6 +35,10 @@ def init():
     global archery_cat
     global archery_score
     global wait_time
+    global target_50
+    global target_100
+    global target_bomb
+
     wait_time = get_time()
 
     archery_score = 0

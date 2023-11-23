@@ -6,15 +6,19 @@ import game_world
 class Arrow:
     image_green = None
     image_red = None
-    def __init__(self, x = 400, y = 300):
+    def __init__(self, x = 400, y = 300, flag = 1):
         if Arrow.image_green == None:
             Arrow.image_green = load_image('resource/Archery/arrow.png')
             Arrow.image_red = load_image('resource/Archery/arrow.png')
 
         self.x, self.y = x, y
-
+        self.flag = flag
     def draw(self):
-        self.image_green.clip_draw(0, 0, 15, 20, self.x + 5, self.y, 30, 30)
+        if self.flag == 1:
+            self.image_green.clip_draw(0, 0, 15, 20, self.x + 5, self.y, 30, 30)
+        else:
+            self.image_red.clip_draw(0, 0, 15, 20, self.x + 5, self.y, 30, 30)
+
         # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
