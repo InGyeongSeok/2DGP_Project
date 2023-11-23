@@ -18,7 +18,6 @@ TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 10.0
 
-animation_names = ['ai_run', 'ai_idle']
 
 class Archery_ai:
 
@@ -39,15 +38,26 @@ class Archery_ai:
         self.loc_no = 0
 
     def get_bb(self):
-        return self.x - 50, self.y - 50, self.x + 50, self.y + 50
+        return self.x - 40, self.y - 35, self.x + 50, self.y + 40
 
     def update(self):
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
+        # self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
         # fill here
+        self.frame = (self.frame + 0.1) % 7
         self.bt.run()
 
     def draw(self):
-        self.image_Idle.clip_draw(0, 0, 38, 54, self.x , self.y, 60, 80)
+        if self.state == 'Idle':
+            self.image_Idle.clip_draw(0, 0, 38, 54, self.x , self.y, 60, 80)
+        if self.state == 'Run' and self.dir <= 0:
+            self.image_Run.clip_draw(int(self.frame) * 56 + 8, 66, 56, 54, self.x , self.y, 80, 80)
+
+            pass
+        elif self.state == 'Run' and self.dir > 0:
+            self.image_Run.clip_draw(int(self.frame) * 56 + 8, 0, 56, 54, self.x , self.y, 80, 80)
+
+            pass
+
         draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
@@ -74,7 +84,7 @@ class Archery_ai:
         self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
 
     def move_to(self, r=0.5):  # 0.5 미터
-        self.state = 'ai_run'
+        self.state = 'Run'
         self.move_slightly_to(self.tx, self.ty)
         if self.distance_less_than(self.tx, self.ty, self.x, self.y, r):
             return BehaviorTree.SUCCESS
@@ -92,7 +102,7 @@ class Archery_ai:
             return BehaviorTree.FAIL
 
     def move_to_boy(self, r=0.5):
-        self.state = 'ai_run'
+        self.state = 'Run'
         self.move_slightly_to(play_mode.boy.x, play_mode.boy.y)
         if self.distance_less_than(play_mode.boy.x, play_mode.boy.y, self.x, self.y, r):
             return BehaviorTree.SUCCESS
