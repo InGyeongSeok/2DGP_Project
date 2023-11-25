@@ -6,6 +6,7 @@ import game_framework
 import game_world
 import title_mode
 from pingpong_background import Pingpong_background
+from pingpong_ball import Ball
 from pingpong_hero import Pingpong_cat
 
 
@@ -34,10 +35,18 @@ def init():
     pingpong_cat = Pingpong_cat()
     game_world.add_object(pingpong_cat, 0)
 
+    ball = Ball()
+    game_world.add_object(ball, 1)
+
+    game_world.add_collision_pair('hero:ball', ball, None)
+
+
+    game_world.add_collision_pair('hero:ball', None, pingpong_cat)
 
 
 def update():
     game_world.update()
+    game_world.handle_collision()
 
 
 def draw():

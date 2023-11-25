@@ -202,6 +202,12 @@ class Pingpong_cat:
     def draw(self):
         self.state_machine.draw()
 
+    def handle_collision(self, group, other):
+        pass
 
+
+    def get_bb(self):
+
+        return self.x - 3, self.y - 0, self.x + 15, self.y  + 25
 
 
