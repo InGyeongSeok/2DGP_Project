@@ -10,8 +10,10 @@ class Ball:
         if Ball.image is None:
             Ball.image = load_image('resource/Pingpong/ball2.png')
         self.index = 0
-        self.x, self.y = 200, 200
-        self.target_x, self.target_y = 600, 300
+        self.x, self.y = 250, 200
+        self.target_x, self.target_y = 600, 400
+        self.inity =  self.target_y - self.y
+
         self.sizex = 30
         self.sizey = 30
         self.collide_time = 0
@@ -36,8 +38,12 @@ class Ball:
         if self.index < self.divisions:
             t = self.index / self.divisions
             cycloid_x, cycloid_y = self.cycloid_coordinates[self.index]
-            interpolated_x = (1 - t) * self.x + t * cycloid_x
-            interpolated_y = (1 - t) * self.y + t * cycloid_y
+            testx = cycloid_x
+            testy = cycloid_y + self.inity // 100 * self.index
+            #선형 보간이 되고 있는 건가??
+            interpolated_x = (1 - t) * self.x + t * testx
+            interpolated_y = (1 - t) * self.y + t * testy
+
             self.x, self.y = interpolated_x, interpolated_y
 
 
