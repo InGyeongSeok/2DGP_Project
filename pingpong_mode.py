@@ -5,6 +5,7 @@ import climbing_mode
 import game_framework
 import game_world
 import title_mode
+from pingpong_ai import PingPong_ai
 from pingpong_background import Pingpong_background
 from pingpong_ball import Ball
 from pingpong_hero import Pingpong_cat
@@ -42,11 +43,17 @@ def init():
 
 
     game_world.add_collision_pair('hero:ball', None, pingpong_cat)
+    pingpong_ai = PingPong_ai()
+    game_world.add_object(pingpong_ai, 2)
 
+    game_world.add_collision_pair('ai:ball', ball, None)
+
+
+    game_world.add_collision_pair('ai:ball', None, pingpong_ai)
 
 def update():
     game_world.update()
-    # game_world.handle_collision()
+    game_world.handle_collision()
 
 
 def draw():

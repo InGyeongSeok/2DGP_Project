@@ -1,7 +1,8 @@
 import math
 import random
 import time
-from pico2d import load_image
+from pico2d import load_image, draw_rectangle
+
 
 class Ball:
     image = None
@@ -16,42 +17,75 @@ class Ball:
 
         self.sizex = 30
         self.sizey = 30
+        self.flag = 1
         self.collide_time = 0
         self.divisions = 100  # 싸이클로이드를 몇 등분으로 나눌지 결정
         self.cycloid_coordinates = self.calculate_cycloid_coordinates()
         self.updates_per_index_increment = 10
         self.update_count = 0
+
     def draw(self):
-        print("DRAW")
-        print(self.x)
-        print(self.y)
         self.image.clip_draw(0, 0, 8, 8, self.x, self.y, self.sizex, self.sizey)
+        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
         # 10번의 update가 발생할 때마다 index를 1씩 증가
-        self.update_count += 1
-        if self.update_count >= self.updates_per_index_increment:
-            self.index += 1
-            self.update_count = 0  # 카운터 초기화
+        if self.flag == 1 :
+            self.update_count += 1
+            if self.update_count >= self.updates_per_index_increment:
+                self.index += 1
+                self.update_count = 0  # 카운터 초기화
 
-        # 현재 index에 해당하는 싸이클로이드 좌표와 목표 좌표로 선형 보간
-        if self.index < self.divisions:
-            t = self.index / self.divisions
-            cycloid_x, cycloid_y = self.cycloid_coordinates[self.index]
-            testx = cycloid_x
-            testy = cycloid_y + self.inity // 100 * self.index
-            #선형 보간이 되고 있는 건가??
-            interpolated_x = (1 - t) * self.x + t * testx
-            interpolated_y = (1 - t) * self.y + t * testy
+            # 현재 index에 해당하는 싸이클로이드 좌표와 목표 좌표로 선형 보간
+            if self.index < self.divisions:
+                t = self.index / self.divisions
+                cycloid_x, cycloid_y = self.cycloid_coordinates[self.index]
+                testx = cycloid_x
+                testy = cycloid_y + self.inity // 100 * self.index
+                #선형 보간이 되고 있는 건가??
+                interpolated_x = (1 - t) * self.x + t * testx
+                interpolated_y = (1 - t) * self.y + t * testy
 
-            self.x, self.y = interpolated_x, interpolated_y
+                self.x, self.y = interpolated_x, interpolated_y
 
 
+        elif self.flag == -1:
+
+            print("ai 충돌!! ")
+            self.update_count += 1
+            if self.update_count >= self.updates_per_index_increment:
+                self.index += 1
+                self.update_count = 0  # 카운터 초기화
+
+            # 현재 index에 해당하는 싸이클로이드 좌표와 목표 좌표로 선형 보간
+            if self.index < self.divisions:
+                t = self.index / self.divisions
+                cycloid_x, cycloid_y = self.cycloid_coordinates[self.index]
+                testx = cycloid_x
+                testy = cycloid_y + self.inity // 100 * self.index
+                # 선형 보간이 되고 있는 건가??
+                interpolated_x = (1 - t) * self.x + t * testx
+                interpolated_y = (1 - t) * self.y + t * testy
+
+                self.x, self.y = interpolated_x, interpolated_y
+
+
+
+
+        print("공 좌표")
+        print(self.x)
+        print(self.y)
     def cycloid(self, t):
-        r = 45  # 싸이클로이드 반지름
-        x = r * (t - math.sin(t)) + self.x
-        y = r * (1 - math.cos(t)) + self.y
-        return x, y
+        if self.flag == 1 :
+            r = 45  # 싸이클로이드 반지름
+            x = r * (t - math.sin(t)) + self.x
+            y = r * (0.5 - math.cos(t)) + self.y
+            return x, y
+        elif self.flag == -1:
+            r = 45  # 싸이클로이드 반지름
+            x = -r * (t - math.sin(t)) + self.x
+            y = r * (0.5 - math.cos(t)) + self.y
+            return x, y
 
     def calculate_cycloid_coordinates(self):
         # 싸이클로이드를 미리 계산하여 배열에 저장
@@ -62,6 +96,23 @@ class Ball:
         return coordinates
 
 
-
     def get_bb(self):
-        return self.x - 20, self.y - 25, self.x + 20, self.y + 25
+        return self.x - 10, self.y - 15, self.x + 10, self.y + 15
+
+    def handle_collision(self, group, other):
+        if group == 'hero:ball':
+            self.flag = 1
+            self.target_x, self.target_y = 600, 400
+            self.inity = self.target_y - self.y
+            self.cycloid_coordinates = self.calculate_cycloid_coordinates()
+            self.index = 0
+            print("hero 공 충돌")
+        if group == 'ai:ball':
+            self.flag = -1
+            self.target_x, self.target_y = 250, 200
+            self.inity = self.target_y - self.y
+            self.cycloid_coordinates = self.calculate_cycloid_coordinates()
+            self.index = 0
+            print("ai 공 충돌")
+
+        pass

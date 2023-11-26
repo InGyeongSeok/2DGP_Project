@@ -1,6 +1,6 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
 
-from pico2d import load_image, get_time, load_font, clamp
+from pico2d import load_image, get_time, load_font, clamp, draw_rectangle
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_a, SDLK_UP, SDLK_DOWN
 
 import game_framework
@@ -201,6 +201,7 @@ class Pingpong_cat:
 
     def draw(self):
         self.state_machine.draw()
+        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def handle_collision(self, group, other):
         pass
@@ -208,6 +209,6 @@ class Pingpong_cat:
 
     def get_bb(self):
 
-        return self.x - 3, self.y - 0, self.x + 15, self.y  + 25
+        return self.x - 30, self.y - 50, self.x +70, self.y  + 30
 
 
