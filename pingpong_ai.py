@@ -36,8 +36,12 @@ class PingPong_ai:
         self.target_index = 0
         self.arrow_start_time = 0
         self.arrow_duration = 3.0
+        self.collide_time = 0
+
+
+
     def get_bb(self):
-        return self.x - 150, self.y - 150, self.x + 150, self.y + 150
+        return self.x - 130, self.y -80, self.x  + 10, self.y +100
 
     def update(self):
         # self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
@@ -123,3 +127,13 @@ class PingPong_ai:
 
 
         self.bt = BehaviorTree(root)
+
+    def handle_collision(self, group, other):
+        if group == 'ai:ball':
+            if self.collide_time == 0:
+                self.collide_time = get_time()
+            elif get_time() - self.collide_time > 0.8:
+
+                self.collide_time = 0
+            print("여기 들어옴?")
+        pass

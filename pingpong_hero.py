@@ -209,6 +209,6 @@ class Pingpong_cat:
 
     def get_bb(self):
 
-        return self.x - 30, self.y - 50, self.x +70, self.y  + 30
+        return self.x + 20, self.y - 50, self.x +70, self.y  + 20
 
 

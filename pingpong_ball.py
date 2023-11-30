@@ -24,6 +24,8 @@ class Ball:
         self.updates_per_index_increment = 10
         self.update_count = 0
 
+        self.ignore_collision_time = 0
+        self.ignore_duration = 1.0  # 1초 동안 충돌 무시
     def draw(self):
         self.image.clip_draw(0, 0, 8, 8, self.x, self.y, self.sizex, self.sizey)
         draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
@@ -100,6 +102,12 @@ class Ball:
         return self.x - 10, self.y - 15, self.x + 10, self.y + 15
 
     def handle_collision(self, group, other):
+        current_time = time.time()
+
+        # 충돌 무시 중이라면 무시
+        if current_time - self.ignore_collision_time < self.ignore_duration:
+            return
+
         if group == 'hero:ball':
             self.flag = 1
             self.target_x, self.target_y = 600, 400
@@ -107,7 +115,7 @@ class Ball:
             self.cycloid_coordinates = self.calculate_cycloid_coordinates()
             self.index = 0
             print("hero 공 충돌")
-        if group == 'ai:ball':
+        elif group == 'ai:ball':
             self.flag = -1
             self.target_x, self.target_y = 250, 200
             self.inity = self.target_y - self.y
@@ -115,4 +123,4 @@ class Ball:
             self.index = 0
             print("ai 공 충돌")
 
-        pass
+        self.ignore_collision_time = current_time  # 충돌 무시 시작 시간 기록
