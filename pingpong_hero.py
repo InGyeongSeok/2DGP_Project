@@ -5,6 +5,7 @@ from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK
 
 import game_framework
 import game_world
+import pingpong_mode
 
 
 # state event check
@@ -43,7 +44,8 @@ def down_up(e):
 
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
-
+def space_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_SPACE
 
 # time_out = lambda e : e[0] == 'TIME_OUT'
 # PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
@@ -109,8 +111,8 @@ class Run:
     def do(pingpong_cat):
         # archery_cat.frame = (archery_cat.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
         # archery_cat.x += archery_cat.dir * RUN_SPEED_PPS * game_framework.frame_time
-        pingpong_cat.x = clamp(50, pingpong_cat.x, 290)
-        pingpong_cat.y = clamp(100, pingpong_cat.y, 600 - 100)
+        pingpong_cat.x = clamp(125, pingpong_cat.x, 270)
+        pingpong_cat.y = clamp(100, pingpong_cat.y, 500)
 
         pingpong_cat.frame = (pingpong_cat.frame + 1) % 360
         pingpong_cat.x += pingpong_cat.dirx
@@ -132,20 +134,28 @@ class Run:
 class Smash:
 
     @staticmethod
-    def enter(archery_cat, e):
+    def enter(pingpong_cat, e):
         print("smash enter")
 
     @staticmethod
-    def exit(archery_cat, e):
+    def exit(pingpong_cat, e):
         pass
 
     @staticmethod
-    def do(archery_cat):
+    def do(pingpong_cat):
         print("smash do")
+        if pingpong_cat.smash >= 5:
+            pingpong_cat.smash = 0
+
         pass
 
     @staticmethod
-    def draw(archery_cat):
+    def draw(pingpong_cat):
+        if pingpong_cat.frame < 180:
+            pingpong_cat.image_Idle.clip_draw(0, 0, 34, 40, pingpong_cat.x, pingpong_cat.y, 100, 115)
+        else:
+            pingpong_cat.image_Idle.clip_draw(30, 0, 60, 40, pingpong_cat.x, pingpong_cat.y, 180, 115)
+
         pass
 
 class StateMachine:
@@ -153,10 +163,11 @@ class StateMachine:
         self.pingpong_cat = pingpong_cat
         self.cur_state = Idle
         self.transitions = {
-            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Idle,
-                   up_down: Run, up_up: Run, down_down: Run, down_up: Run},
+            Idle: {right_down: Run, left_down: Run, space_down: Smash,
+                   up_down: Run, down_down: Run},
             Run: {right_down: Run, left_down: Run, right_up: Idle, left_up: Idle,
-                  up_down: Run, up_up: Idle, down_down: Run, down_up: Idle}
+                  up_down: Run, up_up: Idle, down_down: Run, down_up: Idle, space_down: Smash},
+            Smash:{right_down: Idle, left_down: Idle, up_down: Idle, down_down: Idle, space_up: Idle}
         }
 
     def start(self):
@@ -191,16 +202,23 @@ class Pingpong_cat:
         self.diry = 0
         self.state_machine = StateMachine(self)
         self.state_machine.start()
+        self.font = load_font('ENCR10B.TTF', 20)
+        self.smash = 0
 
     def update(self):
+        print(self.x)
         self.state_machine.update()
 
     def handle_event(self, event):
+
         self.state_machine.handle_event(('INPUT', event))
 
     def draw(self):
         self.state_machine.draw()
         draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+        self.font.draw(self.x - 10, self.y + 48, f'{pingpong_mode.hero_score:02d}', (255, 255, 0))
+        self.font.draw(self.x - 10, self.y + 96, f'{pingpong_mode.ai_score:02d}', (255, 255, 0))
+        self.font.draw(self.x - 10, self.y + 200, f'{self.smash:02d}', (255, 255, 0))
 
     def handle_collision(self, group, other):
         pass
@@ -208,6 +226,6 @@ class Pingpong_cat:
 
     def get_bb(self):
 
-        return self.x + 20, self.y - 50, self.x +70, self.y  + 20
+        return self.x + 30 , self.y - 50, self.x + 60, self.y
 
 

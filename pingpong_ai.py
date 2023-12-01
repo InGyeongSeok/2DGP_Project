@@ -6,6 +6,7 @@ import random
 import math
 import game_framework
 import game_world
+import pingpong_mode
 from behavior_tree import BehaviorTree, Action, Sequence, Condition, Selector
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
@@ -95,16 +96,18 @@ class PingPong_ai:
         #     self.ty = self.ty * 100
         return BehaviorTree.SUCCESS
 
-    def is_target_nearby(self, r):
-        pass
-        #         return BehaviorTree.SUCCESS
-        # return BehaviorTree.FAIL
+    def is_target_nearby(self,distance):
+        if self.distance_less_than(pingpong_mode.ball.x, pingpong_mode.ball.y, self.x, self.y, distance):
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
 
 
     def move_to_target(self, r=0.5):
         self.state = 'Run'
-        self.move_slightly_to(self.targetx, 55)
-        if self.distance_less_than(self.targetx,self.x,r):
+        self.move_slightly_to(pingpong_mode.ball.x, pingpong_mode.ball.y)
+        if self.distance_less_than(pingpong_mode.ball.x, pingpong_mode.ball.y, self.targetx,self.x,r):
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
@@ -116,15 +119,14 @@ class PingPong_ai:
         a2 = Action('Move to', self.move_to)
         a3 = Action('Set random location', self.set_random_location)
 
-        root = SEQ_wander = Sequence('Wander', a3, a2)
+        SEQ_wander = Sequence('Wander', a3, a2)
 
-        c1 = Condition('목표가 근처에 있는가?', self.is_target_nearby, 7)  # 7미터
+        c1 = Condition('목표가 근처에 있는가?', self.is_target_nearby, 5)  # 7미터
         a4 = Action('목표한테 접근', self.move_to_target)
 
         SEQ_chase_boy = Sequence('목표을 추적', c1, a4)
 
-        # root = SEL_chase_or_wander = Selector('추적 또는 배회', SEQ_chase_boy, SEQ_wander)
-
+        root = SEL_chase_or_wander = Selector('추적 또는 배회', SEQ_chase_boy, SEQ_wander)
 
         self.bt = BehaviorTree(root)
 

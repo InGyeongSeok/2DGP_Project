@@ -33,6 +33,7 @@ class Ball:
 
 
 
+
     def draw(self):
         self.image.clip_draw(0, 0, 8, 8, self.x, self.y, self.sizex, self.sizey)
         draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
@@ -42,12 +43,18 @@ class Ball:
         # print(self.x)
         # print(self.target_x)
 
-        if self.x < 0 or self.x > 1000:
+        if self.x < 0 or self.x > 1000: # to_do 테이블 범위 y 넘어가면 새로 생성!
             # 새로운 공 생성 로직 추가
+
+            if self.x < 0 :
+                pingpong_mode.ai_score += 10
+            else:
+                pingpong_mode.hero_score += 10
+
             self.flag = -1
             print("새로운 공 생성")
             self.x, self.y = pingpong_mode.pingpong_ai.x - 100, pingpong_mode.pingpong_ai.y
-            self.target_x, self.target_y = pingpong_mode.pingpong_cat.x, pingpong_mode.pingpong_cat.y
+            self.target_x, self.target_y = pingpong_mode.pingpong_cat.x, pingpong_mode.pingpong_cat.y - 50
             self.inity = self.target_y - self.y
             self.cycloid_coordinates = self.calculate_cycloid_coordinates()
             self.index = 0
@@ -99,16 +106,14 @@ class Ball:
 
 
 
-
-
     def cycloid(self, t):
         if self.flag == 1 :
-            r = 48  # 싸이클로이드 반지름
+            r = 55  # 싸이클로이드 반지름
             x = r * (t - math.sin(t)) + self.x
             y = r * ( - math.cos(t)) + self.y
             return x, y
         elif self.flag == -1:
-            r =48  # 싸이클로이드 반지름
+            r =55  # 싸이클로이드 반지름
             x = -r * (t - math.sin(t)) + self.x
             y = r * (1 - math.cos(t)) + self.y
             return x, y
@@ -136,12 +141,14 @@ class Ball:
             self.inity = self.target_y - self.y
             self.cycloid_coordinates = self.calculate_cycloid_coordinates()
             self.index = 0
+            pingpong_mode.pingpong_cat.smash += 1
         elif group == 'ai:ball':
-            self.flag = -1
-            self.target_x, self.target_y = pingpong_mode.pingpong_cat.x, pingpong_mode.pingpong_cat.y
-            self.inity = self.target_y - self.y
-            self.cycloid_coordinates = self.calculate_cycloid_coordinates()
-            self.index = 0
+            if pingpong_mode.pingpong_cat.smash != 5:
+                self.flag = -1
+                self.target_x, self.target_y = pingpong_mode.pingpong_cat.x, pingpong_mode.pingpong_cat.y - 50
+                self.inity = self.target_y - self.y
+                self.cycloid_coordinates = self.calculate_cycloid_coordinates()
+                self.index = 0
 
         self.ignore_collision_time = current_time  # 충돌 무시 시작 시간 기록
         self.still_time = current_time  # 움직임 기록 시간 초기화

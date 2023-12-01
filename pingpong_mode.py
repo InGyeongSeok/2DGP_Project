@@ -30,6 +30,11 @@ def handle_events():
 def init():
     global pingpong_cat
     global pingpong_ai
+    global ball
+    global hero_score
+    global ai_score
+    hero_score = 0
+    ai_score = 0
     pingpong_background = Pingpong_background()
     game_world.add_object(pingpong_background, 0)
 
