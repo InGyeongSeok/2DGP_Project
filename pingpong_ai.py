@@ -24,7 +24,7 @@ class PingPong_ai:
     def __init__(self):
         self.font = load_font('ENCR10B.TTF', 20)
         self.x = 800
-        self.y = 55
+        self.y = 500
         self.frame = 0
         self.action = 0
         self.dir = 1
@@ -41,7 +41,7 @@ class PingPong_ai:
 
 
     def get_bb(self):
-        return self.x - 130, self.y -80, self.x  + 10, self.y +100
+        return self.x - 150, self.y -40, self.x - 30 , self.y +40
 
     def update(self):
         # self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
@@ -50,12 +50,12 @@ class PingPong_ai:
         self.bt.run()
 
     def draw(self):
-        if self.state == 'Run' and self.dir > 0:
+        if self.state == 'Run' :
             self.image_Run.clip_draw(int(self.frame) * 80 , 0, 80, 89, self.x , self.y, 300, 300)
 
             pass
-        elif self.state == 'Run':
-            self.image_Run.clip_draw(int(self.frame) * 80 , 0, 80, 89, self.x, self.y, 300, 300)
+        # elif self.state == 'Run':
+        #     self.image_Run.clip_draw(int(self.frame) * 80 , 0, 80, 89, self.x, self.y, 300, 300)
 
             pass
 
