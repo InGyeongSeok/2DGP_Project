@@ -193,7 +193,6 @@ class Pingpong_cat:
         self.state_machine.start()
 
     def update(self):
-
         self.state_machine.update()
 
     def handle_event(self, event):

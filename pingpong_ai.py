@@ -24,7 +24,7 @@ class PingPong_ai:
     def __init__(self):
         self.font = load_font('ENCR10B.TTF', 20)
         self.x = 800
-        self.y = 500
+        self.y = 300
         self.frame = 0
         self.action = 0
         self.dir = 1
@@ -50,7 +50,7 @@ class PingPong_ai:
         self.bt.run()
 
     def draw(self):
-        if self.state == 'Run' :
+        if self.state == 'Run':
             self.image_Run.clip_draw(int(self.frame) * 80 , 0, 80, 89, self.x , self.y, 300, 300)
 
             pass
@@ -133,7 +133,6 @@ class PingPong_ai:
             if self.collide_time == 0:
                 self.collide_time = get_time()
             elif get_time() - self.collide_time > 0.8:
-
                 self.collide_time = 0
-            print("여기 들어옴?")
+
         pass

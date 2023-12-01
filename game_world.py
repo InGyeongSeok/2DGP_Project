@@ -86,3 +86,4 @@ def handle_collision():
                     b.handle_collision(group, a)
 
     return None
+

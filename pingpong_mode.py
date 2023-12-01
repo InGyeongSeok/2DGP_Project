@@ -29,28 +29,27 @@ def handle_events():
 
 def init():
     global pingpong_cat
-
+    global pingpong_ai
     pingpong_background = Pingpong_background()
     game_world.add_object(pingpong_background, 0)
 
     pingpong_cat = Pingpong_cat()
     game_world.add_object(pingpong_cat, 0)
 
+
+    pingpong_ai = PingPong_ai()
+    game_world.add_object(pingpong_ai, 2)
+
+
+
+    game_world.add_collision_pair('ai:ball', None, pingpong_ai)
     ball = Ball()
     game_world.add_object(ball, 1)
 
     game_world.add_collision_pair('hero:ball', ball, None)
-
-
-    game_world.add_collision_pair('hero:ball', None, pingpong_cat)
-    pingpong_ai = PingPong_ai()
-    game_world.add_object(pingpong_ai, 2)
-
     game_world.add_collision_pair('ai:ball', ball, None)
 
-
-    game_world.add_collision_pair('ai:ball', None, pingpong_ai)
-
+    game_world.add_collision_pair('hero:ball', None, pingpong_cat)
 def update():
     game_world.update()
     game_world.handle_collision()
