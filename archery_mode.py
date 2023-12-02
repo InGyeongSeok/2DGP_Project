@@ -8,7 +8,7 @@ import title_mode
 from archery_ai import Archery_ai
 
 from archery_background import Archery_background
-from archery_target import Target_50, Target_100, Target_bomb
+from archery_target import Target_50, Target_100
 from archery_hero import Archery_cat
 from game_timer import Gametimer
 
@@ -34,41 +34,50 @@ def handle_events():
 def init():
     global archery_cat
     global archery_score
+    global ai_score
+
     global wait_time
     global target_50
     global target_100
-    global target_bomb
+    global archery_time
+    # global target_bomb
 
     wait_time = get_time()
-
+    archery_time = 61
     archery_score = 0
+    ai_score = 0
+
     archery_background = Archery_background()
     game_world.add_object(archery_background, 0)
 
     archery_cat = Archery_cat()
     game_world.add_object(archery_cat, 0)
 
-    target_50 = [Target_50() for i in range(5)]
+    target_50 = [Target_50() for i in range(8)]
     game_world.add_objects(target_50, 0)
 
-    target_100 = [Target_100() for i in range(3)]
+    target_100 = [Target_100() for i in range(10)]
     game_world.add_objects(target_100, 0)
 
-    target_bomb = [Target_bomb() for i in range(3)]
-    game_world.add_objects(target_bomb, 0)
+    # target_bomb = [Target_bomb() for i in range(3)]
+    # game_world.add_objects(target_bomb, 0)
 
     # gametimer = Gametimer(15)
     # game_world.add_object(gametimer, 2)
 
 
     for s_score in target_50:
-        game_world.add_collision_pair('s_score:arrow', s_score, None)
+        game_world.add_collision_pair('s_score:hero', s_score, None)
+        game_world.add_collision_pair('s_score:ai', s_score, None)
+
 
     for b_score in target_100:
-        game_world.add_collision_pair('b_score:arrow', b_score, None)
+        game_world.add_collision_pair('b_score:hero', b_score, None)
+        game_world.add_collision_pair('b_score:ai', b_score, None)
 
-    for bomb in target_bomb:
-        game_world.add_collision_pair('bomb:arrow', bomb, None)
+
+    # for bomb in target_bomb:
+    #     game_world.add_collision_pair('bomb:arrow', bomb, None)
 
     archery_ai = Archery_ai()
     game_world.add_object(archery_ai, 2)
@@ -76,9 +85,9 @@ def init():
 
 
 def update():
+    global archery_time
     game_world.update()
-    # game_world.handle_collision()
-
+    game_world.handle_collision()
 
 def draw():
     clear_canvas()

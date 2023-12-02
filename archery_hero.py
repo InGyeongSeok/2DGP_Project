@@ -143,9 +143,9 @@ class Archery_cat:
     def fire_arrow(self):
         arrow = Arrow(self.x, self.y)
         game_world.add_object(arrow, 1)
-        game_world.add_collision_pair('s_score:arrow', None, arrow)
-        game_world.add_collision_pair('b_score:arrow', None, arrow)
-        game_world.add_collision_pair('bomb:arrow', None, arrow)
+        game_world.add_collision_pair('s_score:hero', None, arrow)
+        game_world.add_collision_pair('b_score:hero', None, arrow)
+        # game_world.add_collision_pair('bomb:arrow', None, arrow)
 
 
 

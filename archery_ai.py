@@ -44,7 +44,7 @@ class Archery_ai:
     def update(self):
         # self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
         # fill here
-        self.frame = (self.frame + 0.1) % 7
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 7
         self.bt.run()
 
     def draw(self):
@@ -87,12 +87,13 @@ class Archery_ai:
 
     def set_random_location(self):
         self.tx, self.ty = random.randint(100, 900), 55
-        print(self.tx)
+        # print(self.tx)
         if self.tx < 100:
             self.tx = self.tx * 100
         return BehaviorTree.SUCCESS
 
     def is_target_nearby(self, r):
+
         for i in archery_mode.target_100:
             if self.distance_less_than(self.x, i.x, r):
                 self.targetx = i.x
@@ -111,11 +112,11 @@ class Archery_ai:
 
 
     def arrow(self):
-        arrow = Arrow(self.x, self.y)
+        arrow = Arrow(self.x, self.y, 0)
         game_world.add_object(arrow, 1)
-        game_world.add_collision_pair('s_score:arrow', None, arrow)
-        game_world.add_collision_pair('b_score:arrow', None, arrow)
-        game_world.add_collision_pair('bomb:arrow', None, arrow)
+        game_world.add_collision_pair('s_score:ai', None, arrow)
+        game_world.add_collision_pair('b_score:ai', None, arrow)
+        # game_world.add_collision_pair('bomb:arrow', None, arrow)
         archery_mode.target_100.remove(self.target_index)
         return BehaviorTree.FAIL
 
