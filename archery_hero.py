@@ -94,8 +94,8 @@ class StateMachine:
         self.archery_cat = archery_cat
         self.cur_state = Idle
         self.transitions = {
-            Idle: {right_down: Run, left_down: Run, right_up: Idle, left_up: Idle, space_down: Idle},
-            Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle}
+            Idle: {right_down: Run, left_down: Run, space_down: Idle},
+            Run: {right_down: Run, left_down: Run, right_up: Idle, left_up: Idle}
         }
 
     def start(self):
@@ -138,7 +138,7 @@ class Archery_cat:
 
     def draw(self):
         self.state_machine.draw()
-        self.font.draw(self.x - 10, self.y + 48, f'{archery_mode.archery_score:02d}', (255, 255, 0))
+        # self.font.draw(self.x - 10, self.y + 48, f'{archery_mode.archery_score:02d}', (255, 255, 0))
 
     def fire_arrow(self):
         arrow = Arrow(self.x, self.y)

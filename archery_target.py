@@ -1,4 +1,4 @@
-from pico2d import load_image, draw_rectangle, clamp
+from pico2d import load_image, draw_rectangle, clamp, get_time
 import random
 
 import game_framework
@@ -78,8 +78,9 @@ class Target_100:
         # self.y += self.velocity
         # self.y = 200
         # self.frame = 30
-        self.x = clamp(25, self.x, 1000-25)
-        self.x += self.dirx * 50 *game_framework.frame_time
+        if get_time() - archery_mode.wait_time > 4 and get_time() - archery_mode.wait_time <64:
+            self.x = clamp(25, self.x, 1000-25)
+            self.x += self.dirx * 50 *game_framework.frame_time
 
         if self.x > 975:
             self.dirx = -1

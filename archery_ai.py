@@ -25,7 +25,7 @@ FRAMES_PER_ACTION = 10.0
 class Archery_ai:
     def __init__(self):
         self.font = load_font('ENCR10B.TTF', 20)
-        self.x = 400
+        self.x = 800
         self.y = 55
         self.frame = 0
         self.action = 0
@@ -44,17 +44,19 @@ class Archery_ai:
     def update(self):
         # self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
         # fill here
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 7
-        self.bt.run()
+        if get_time() - archery_mode.wait_time > 4 and get_time() - archery_mode.wait_time < 64:
+            self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 7
+            self.bt.run()
 
     def draw(self):
         if self.state == 'Run' and self.dir > 0:
-            self.image_Run.clip_draw(int(self.frame) * 56 + 8, 66, 56, 54, self.x , self.y, 80, 80)
+            self.image_Run.clip_draw(int(self.frame) * 56 + 8, 66, 56, 54, self.x , self.y, 100, 100)
 
             pass
         elif self.state == 'Run':
-            self.image_Run.clip_draw(int(self.frame) * 56 + 8, 0, 56, 54, self.x , self.y, 80, 80)
-
+            self.image_Run.clip_draw(int(self.frame) * 56 + 8, 0, 56, 54, self.x , self.y, 100, 100)
+        else:
+            self.image_Run.clip_draw(int(self.frame) * 56 + 8, 0, 56, 54, self.x, self.y, 100, 100)
             pass
 
         draw_rectangle(*self.get_bb())
@@ -93,8 +95,7 @@ class Archery_ai:
         return BehaviorTree.SUCCESS
 
     def is_target_nearby(self, r):
-
-        for i in archery_mode.target_100:
+        for i in archery_mode.target_100 + archery_mode.target_50:
             if self.distance_less_than(self.x, i.x, r):
                 self.targetx = i.x
                 self.target_index = i
@@ -117,8 +118,12 @@ class Archery_ai:
         game_world.add_collision_pair('s_score:ai', None, arrow)
         game_world.add_collision_pair('b_score:ai', None, arrow)
         # game_world.add_collision_pair('bomb:arrow', None, arrow)
-        archery_mode.target_100.remove(self.target_index)
+        if self.target_index in archery_mode.target_100:
+            archery_mode.target_100.remove(self.target_index)
+        elif self.target_index in archery_mode.target_50:
+            archery_mode.target_50.remove(self.target_index)
         return BehaviorTree.FAIL
+
 
 
     def build_behavior_tree(self):
@@ -127,7 +132,7 @@ class Archery_ai:
 
         SEQ_wander = Sequence('Wander', a3, a2)
 
-        c1 = Condition('목표가 근처에 있는가?', self.is_target_nearby, 7)  # 7미터
+        c1 = Condition('목표가 근처에 있는가?', self.is_target_nearby, 5)
         a4 = Action('목표한테 접근', self.move_to_target)
         a5 = Action('화살 쏘기', self.arrow)
 

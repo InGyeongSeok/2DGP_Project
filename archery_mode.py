@@ -1,3 +1,5 @@
+import random
+
 from pico2d import *
 
 import climbing_mode
@@ -27,9 +29,11 @@ def handle_events():
             game_framework.change_mode(climbing_mode)
         elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_3:
             game_framework.change_mode(pingpong_mode)
-        # elif get_time() - wait_time > 3 and get_time() - wait_time < 15:
-        else:
+        elif get_time() - wait_time > 3 and get_time() - wait_time < 64:
             archery_cat.handle_event(event)
+        # else:
+        #     archery_cat.handle_event(event)
+
 
 def init():
     global archery_cat
@@ -40,10 +44,11 @@ def init():
     global target_50
     global target_100
     global archery_time
+    global target_time
     # global target_bomb
 
     wait_time = get_time()
-    archery_time = 61
+    archery_time = 60
     archery_score = 0
     ai_score = 0
 
@@ -62,8 +67,8 @@ def init():
     # target_bomb = [Target_bomb() for i in range(3)]
     # game_world.add_objects(target_bomb, 0)
 
-    # gametimer = Gametimer(15)
-    # game_world.add_object(gametimer, 2)
+    gametimer = Gametimer(64)
+    game_world.add_object(gametimer, 2)
 
 
     for s_score in target_50:
@@ -83,12 +88,25 @@ def init():
     game_world.add_object(archery_ai, 2)
     # game_world.add_collision_pair('zombie:ball', zombie, None)
 
-
+    target_time = get_time()
 def update():
-    global archery_time
+    global target_50
+    global target_100
+    global target_time
+    if get_time() - target_time > 15:
+        target_50 = [Target_50() for _ in range(8)]
+        game_world.add_objects(target_50, 0)
+        for s_score in target_50:
+            game_world.add_collision_pair('s_score:hero', s_score, None)
+            game_world.add_collision_pair('s_score:ai', s_score, None)
+        target_100 = [Target_100() for _ in range(5)]
+        game_world.add_objects(target_100, 0)
+        for b_score in target_100:
+            game_world.add_collision_pair('b_score:hero', b_score, None)
+            game_world.add_collision_pair('b_score:ai', b_score, None)
+        target_time = get_time()
     game_world.update()
     game_world.handle_collision()
-
 def draw():
     clear_canvas()
     game_world.render()

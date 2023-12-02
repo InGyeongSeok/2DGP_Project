@@ -3,6 +3,7 @@
 from pico2d import load_image, get_time, load_font, clamp, draw_rectangle
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_a, SDLK_UP, SDLK_DOWN
 
+import archery_mode
 import game_framework
 import game_world
 import pingpong_mode
@@ -174,6 +175,7 @@ class StateMachine:
         self.cur_state.enter(self.pingpong_cat, ('NONE', 0))
 
     def update(self):
+
         self.cur_state.do(self.pingpong_cat)
 
     def handle_event(self, e):
