@@ -1,4 +1,4 @@
-from pico2d import load_image, load_font
+from pico2d import load_image, load_font, load_music, get_time
 
 import archery_mode
 import game_framework
@@ -15,7 +15,12 @@ class Archery_background:
         self.font = load_font('ENCR10B.TTF', 50)
         self.font2 = load_font('ENCR10B.TTF', 35)
         self.font3 = load_font('ENCR10B.TTF', 35)
-
+        self.start = load_music('resource/start.mp3')
+        self.start.set_volume(60)
+        self.start.play()
+        self.bgm = load_music('resource/archery3.mp3')
+        self.bgm.set_volume(60)
+        self.bgm_started = False
 
         self.frame = 0
 
@@ -37,12 +42,19 @@ class Archery_background:
 
         self.image_score.clip_draw(0, 0, 200, 50, 500, 555, 400, 95)
         self.font.draw(465, 565, f'{int(archery_mode.archery_time):02d}', (255, 255, 255))
-        self.font2.draw(340, 555, f'{archery_mode.archery_score:02d}', (0, 255, 0))
-        self.font3.draw(620, 555, f'{archery_mode.ai_score:02d}', (255, 0, 0))
+        self.font2.draw(315, 555, f'{archery_mode.archery_score:02d}', (0, 255, 0))
+        self.font3.draw(615, 555, f'{archery_mode.ai_score:02d}', (255, 0, 0))
     def update(self):
         global archery_time
 
+        if get_time() - archery_mode.wait_time > 4 and not self.bgm_started:
+            self.bgm_started = True
+            self.bgm.repeat_play()
+
+        if get_time() - archery_mode.wait_time > 4 and get_time() - archery_mode.wait_time < 64:
+            if  archery_mode.archery_time > 0:
+                archery_mode.archery_time -= game_framework.frame_time
         self.frame = (self.frame + game_framework.frame_time) % 2
-        archery_mode.archery_time -= game_framework.frame_time
+
 
         pass

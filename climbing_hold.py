@@ -17,15 +17,15 @@ class Hold_pink:
         if self.x ==0 and self.y == 0:
             self.x ,self.y= random.randint(100, 900), random.randint(200, 1500)
 
-        self.sizex = 55
-        self.sizey = 65
+        self.sizex = 45
+        self.sizey = 45
 
     def draw(self):
         screen_x = self.x - server.background.window_left
         screen_y = self.y - server.background.window_bottom
         self.image.clip_draw(0, 0, 13, 13, screen_x, screen_y, self.sizex, self.sizey)
 
-        # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
         pass
@@ -56,8 +56,8 @@ class Hold_green:
         if self.x == 0 and self.y == 0:
             self.x ,  self.y= random.randint(100, 700), random.randint(500, 1300)
 
-        self.sizex = 55
-        self.sizey = 65
+        self.sizex = 45
+        self.sizey = 45
         self.collide_time = 0
 
     def draw(self):
@@ -65,7 +65,7 @@ class Hold_green:
         screen_y = self.y - server.background.window_bottom
         self.image.clip_draw(0, 15, 13, 13, screen_x, screen_y, self.sizex, self.sizey)
 
-        # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
         pass

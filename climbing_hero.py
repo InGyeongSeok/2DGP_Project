@@ -1,4 +1,5 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
+import climbing_mode
 import server
 
 from pico2d import load_image, get_time, load_font, clamp, get_canvas_height, get_canvas_width, draw_rectangle
@@ -52,16 +53,15 @@ def hold_out(e):
 def hold(e):
     return e[0] == 'Hold'
 
-# time_out = lambda e : e[0] == 'TIME_OUT'
-# PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-# RUN_SPEED_KMPH = 20.0  # Km / Hour
-# RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
-# RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
-# RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
-#
-# TIME_PER_ACTION = 0.5
-# ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-# FRAMES_PER_ACTION = 6
+PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
+RUN_SPEED_KMPH = 20.0  # Km / Hour
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 4
 
 
 class Idle:
@@ -79,7 +79,7 @@ class Idle:
 
         climbing_cat.x = clamp(45, climbing_cat.x, server.background.w -45)
         climbing_cat.y = clamp(45, climbing_cat.y, server.background.h - 275)
-        climbing_cat.frame = (climbing_cat.frame + 1) % 200
+        climbing_cat.frame = (climbing_cat.frame + game_framework.frame_time) % 2
 
 
         if climbing_cat.y > 130 and climbing_cat.y < 1615:
@@ -91,7 +91,7 @@ class Idle:
     def draw(climbing_cat):
         sx, sy = climbing_cat.x - server.background.window_left, climbing_cat.y - server.background.window_bottom
 
-        climbing_cat.image_Idle.clip_draw(32 * (climbing_cat.frame // 100), 0, 20, 24, sx, sy , 70, 70)
+        climbing_cat.image_Idle.clip_draw(32 * int(climbing_cat.frame // 1), 0, 20, 24, sx, sy , 90, 90)
 
 class Hold:
 
@@ -107,17 +107,17 @@ class Hold:
     def do(climbing_cat):
         climbing_cat.x = clamp(45, climbing_cat.x, server.background.w-45)
         climbing_cat.y = clamp(45, climbing_cat.y, server.background.h - 275)
-        climbing_cat.frame = (climbing_cat.frame + 1) % 300
+        climbing_cat.frame = (climbing_cat.frame + 5 * game_framework.frame_time) % 3
 
         climbing_cat.x = climbing_hold.holdx - 5
-        climbing_cat.y = climbing_hold.holdy - 30
+        climbing_cat.y = climbing_hold.holdy -55
         pass
 
     @staticmethod
     def draw(climbing_cat):
         sx, sy = climbing_cat.x - server.background.window_left, climbing_cat.y - server.background.window_bottom
 
-        climbing_cat.image_jump.clip_draw(32 * (climbing_cat.frame // 100 + 3) + 1, 0, 21, 35, sx, sy , 90, 90)
+        climbing_cat.image_jump.clip_draw(32 * int(climbing_cat.frame + 3) + 1, 0, 21, 35, sx, sy , 90, 120)
 
 class Fall:
 
@@ -135,11 +135,11 @@ class Fall:
 
         climbing_cat.x = clamp(45, climbing_cat.x, server.background.w -45)
         climbing_cat.y = clamp(45, climbing_cat.y, server.background.h - 275)
-        climbing_cat.frame = (climbing_cat.frame + 1) % 200
+        climbing_cat.frame = (climbing_cat.frame + 8 * game_framework.frame_time) % 2
 
 
         if climbing_cat.y > 130 and climbing_cat.y < 1615:
-            climbing_cat.y -= 1
+            climbing_cat.y -= RUN_SPEED_PPS * game_framework.frame_time
         if get_time() - climbing_cat.wait_time > 0.5:
             climbing_cat.state_machine.handle_event(('TIME_OUT', 0))
         pass
@@ -147,7 +147,7 @@ class Fall:
     @staticmethod
     def draw(climbing_cat):
         sx, sy = climbing_cat.x - server.background.window_left, climbing_cat.y - server.background.window_bottom
-        climbing_cat.image_fall.clip_draw(39 * (climbing_cat.frame // 100), 0, 22, 32, sx, sy , 70, 80)
+        climbing_cat.image_fall.clip_draw(39 * int(climbing_cat.frame), 0, 22, 32, sx, sy , 90, 90)
 
 class Jump:
 
@@ -165,9 +165,9 @@ class Jump:
         climbing_cat.x = clamp(45, climbing_cat.x, server.background.w-45)
         climbing_cat.y = clamp(45, climbing_cat.y, server.background.h - 275)
         if get_time() - climbing_cat.wait_time <= 0.5:
-            climbing_cat.y += 0.5
+            climbing_cat.y += RUN_SPEED_PPS * game_framework.frame_time
         elif get_time() - climbing_cat.wait_time <= 1:
-            climbing_cat.y -= 0.5
+            climbing_cat.y -= RUN_SPEED_PPS * game_framework.frame_time
         if get_time() - climbing_cat.wait_time > 1:
             climbing_cat.state_machine.handle_event(('TIME_OUT', 0))
         # print(climbing_cat.y )
@@ -177,7 +177,7 @@ class Jump:
     def draw(climbing_cat):
         sx, sy = climbing_cat.x - server.background.window_left, climbing_cat.y - server.background.window_bottom
 
-        climbing_cat.image_jump.clip_draw(0, 0, 25, 35, sx, sy, 85, 85)
+        climbing_cat.image_jump.clip_draw(0, 0, 25, 35, sx, sy, 100, 100)
 
 
 class Run:
@@ -187,19 +187,19 @@ class Run:
         climbing_cat.wait_time = get_time()
 
         if right_down(e) or left_up(e):  # 오른쪽으로 RUN
-            climbing_cat.dirx = 0.5
+            climbing_cat.dirx = 1
             climbing_cat.diry = 0
             climbing_cat.action = 1
         elif left_down(e) or right_up(e):  # 왼쪽으로 RUN
-            climbing_cat.dirx = -0.5
+            climbing_cat.dirx = -1
             climbing_cat.diry = 0
             climbing_cat.action = 2
         elif up_down(e) or down_up(e):  # 위로 RUN
-            climbing_cat.diry = 0.5
+            climbing_cat.diry = 1
             climbing_cat.dirx = 0
             climbing_cat.action = 3
         elif down_down(e) or up_up(e):  # 아래로 RUN
-            climbing_cat.diry = -0.5
+            climbing_cat.diry = -1
             climbing_cat.dirx = 0
             climbing_cat.action = 4
 
@@ -209,14 +209,13 @@ class Run:
 
     @staticmethod
     def do(climbing_cat):
-        climbing_cat.x = clamp(45, climbing_cat.x, server.background.w-45 )
+        climbing_cat.x = clamp(45, climbing_cat.x, server.background.w- 45 )
         climbing_cat.y = clamp(45, climbing_cat.y, server.background.h-275)
 
-        climbing_cat.frame = (climbing_cat.frame + 1) % 200
-        if climbing_cat.y > 130 and climbing_cat.y < 1615:
-            climbing_cat.diry = 0.2
-        climbing_cat.x += climbing_cat.dirx
-        climbing_cat.y += climbing_cat.diry
+        climbing_cat.frame = (climbing_cat.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+
+        climbing_cat.x += climbing_cat.dirx * RUN_SPEED_PPS * game_framework.frame_time
+        climbing_cat.y += climbing_cat.diry * RUN_SPEED_PPS * game_framework.frame_time
         if get_time() - climbing_cat.wait_time > 0.5:
             climbing_cat.state_machine.handle_event(('TIME_OUT', 0))
 
@@ -228,15 +227,15 @@ class Run:
         sx, sy = climbing_cat.x - server.background.window_left, climbing_cat.y - server.background.window_bottom
 
         if climbing_cat.action == 1:
-            climbing_cat.image_right.clip_draw(32* (climbing_cat.frame // 50), 0, 24, 23, sx, sy, 70, 70)
+            climbing_cat.image_right.clip_draw(32* int(climbing_cat.frame) , 0, 24, 23, sx, sy, 90, 90)
         elif climbing_cat.action == 2:
-            climbing_cat.image_left.clip_draw(35* (climbing_cat.frame // 50), 0, 24, 23, sx, sy, 70, 70)
+            climbing_cat.image_left.clip_draw(35* int(climbing_cat.frame ), 0, 24, 23, sx, sy, 90, 90)
         elif climbing_cat.action == 4:
-            climbing_cat.image_down.clip_draw(20 * (climbing_cat.frame // 50), 0, 20, 23, sx,
-                                              sy, 70, 70)
+            climbing_cat.image_down.clip_draw(20 * int(climbing_cat.frame ), 0, 20, 23, sx,
+                                              sy, 90, 90)
         elif climbing_cat.action == 3:
-            climbing_cat.image_up.clip_draw(20 * (climbing_cat.frame //50), 0, 20, 25, sx,
-                                              sy, 70, 70)
+            climbing_cat.image_up.clip_draw(20 * int(climbing_cat.frame), 0, 20, 25, sx,
+                                              sy, 90, 90)
 
 
 
@@ -251,14 +250,14 @@ class StateMachine:
         self.transitions = {
             Idle: {right_down: Run, left_down: Run, space_down: Jump,
                    up_down: Run, down_down: Run, hold:Hold ,  hold_out : Fall},
-            Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle,
-                  up_down: Idle, up_up: Idle, down_down: Idle, down_up: Idle, hold: Hold
+            Run: {right_down: Run, left_down: Run, right_up: Idle, left_up: Idle,
+                  up_down: Run, up_up: Idle, down_down: Run, down_up: Idle, hold: Hold
                   ,time_out: Idle,  hold_out : Fall},
             Jump: {right_down: Run, left_down: Run, left_up: Run, right_up: Run,
                    up_down: Run, up_up: Run, down_down: Run, down_up: Run,
                    time_out: Idle,  hold_out : Fall},
-            Hold: {space_down: Jump, right_down: Run, left_down: Run, up_down: Run, down_down: Run, hold_out : Fall},
-            Fall:{time_out : Idle}
+            Hold: {right_down: Run, left_down: Run, space_down: Jump, hold_out : Fall},
+            Fall:{right_down: Run, left_down: Run, space_down: Jump, time_out : Idle}
         }
 
     def start(self):
@@ -301,8 +300,20 @@ class Climbing_cat:
         self.image_fall = load_image('resource/Climbing/fall.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
+        self.font = load_font('ENCR10B.TTF', 50)
+        self.font2 = load_font('ENCR10B.TTF', 30)
+        self.collision_timer = 0.0  # 충돌 후 경과 시간
+        self.collision_duration = 1.0  # 충돌이 무시될 시간 (초)
+
 
     def update(self):
+        if get_time() - climbing_mode.wait_time > 4 and get_time() - climbing_mode.wait_time < 64:
+            if  climbing_mode.climb_time > 0:
+                climbing_mode.climb_time -= game_framework.frame_time
+
+        if self.collision_timer > 0:
+            self.collision_timer -= game_framework.frame_time
+
         self.state_machine.update()
 
 
@@ -310,15 +321,19 @@ class Climbing_cat:
         self.state_machine.handle_event(('INPUT', event))
 
     def draw(self):
+        self.font.draw(465, 565, f'{int(climbing_mode.climb_time):02d}', (255, 255, 255))
+        self.state_machine.draw()
+        draw_rectangle(*self.get_bb()) #튜플을 풀어해쳐서 각각 인자로 전달
+        current_height_percent = max(0, (self.y - 125) / (1625 - 125) * 100)
 
-            self.state_machine.draw()
-        # self.font.draw(self.x - 10, self.y + 48, f'{archery_mode.archery_score:02d}', (255, 255, 0))
-        # draw_rectangle(*self.get_bb()) #튜플을 풀어해쳐서 각각 인자로 전달
+        self.font2.draw(900, 565, f'{int(current_height_percent):d}%', (255, 255, 255))
+
+        # print(f'현재 높이: {current_height_percent:.2f}%')
 
     def get_bb(self):
         screen_x = self.x - server.background.window_left
         screen_y = self.y - server.background.window_bottom
-        return screen_x - 3, screen_y - 0, screen_x + 15, screen_y + 25
+        return screen_x - 10, screen_y , screen_x + 20, screen_y + 35
 
 
     def handle_collision(self, group, other):
@@ -329,9 +344,9 @@ class Climbing_cat:
 
         if group == 'green:hero':
             self.state_machine.handle_event(('Hold', 0))
-
-        if group == 'snow:hero':
-            self.state_machine.handle_event(('Hold_out', 0))
-
+        if self.collision_timer <= 0:
+            if group == 'snow:hero':
+                self.state_machine.handle_event(('Hold_out', 0))
+            self.collision_timer = self.collision_duration
 
 

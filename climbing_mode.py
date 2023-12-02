@@ -29,8 +29,10 @@ def handle_events():
             game_framework.change_mode(archery_mode)
         elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_3:
             game_framework.change_mode(pingpong_mode)
-        elif get_time() - wait_time > 3 and get_time() - wait_time < 20:
+        elif get_time() - wait_time > 3 and get_time() - wait_time < 34:
             server.climbing_cat.handle_event(event)
+        # else:
+        #     server.climbing_cat.handle_event(event)
 
 
 
@@ -38,19 +40,24 @@ def handle_events():
 def init():
     global climbing_cat
     global wait_time
-    wait_time = get_time()
+    global target_time
+    global climb_time
 
+
+    wait_time = get_time()
+    target_time = 0
+    climb_time = 30
     server.background = Climbing_background()
     game_world.add_object(server.background, 0)
 
     server.climbing_cat = Climbing_cat()
     game_world.add_object(server.climbing_cat, 1)
 
-    gametimer = Gametimer(20)
+    gametimer = Gametimer(34)
     game_world.add_object(gametimer, 2)
 
 
-    snow = [Climbing_snow(random.randint(0, 1000), random.randint(1200, 1600)) for i in range(5)]
+    snow = [Climbing_snow(random.randint(0, 1000), random.randint(1200, 1600)) for i in range(3)]
     # snow.append(Climbing_snow())
     game_world.add_objects(snow, 1)
 
@@ -99,14 +106,15 @@ def init():
 
 
 def update():
-    global flag
-    if get_time() - wait_time > 10 and flag == 0:
-        after_snow = [Climbing_snow(random.randint(0, 1000), random.randint(1200, 1600)) for i in range(5)]
-        game_world.add_objects(after_snow, 1)
-        for s in after_snow:
+    global target_time
+    if get_time() - target_time > 10 and get_time() - wait_time < 34:
+        snow = [Climbing_snow(random.randint(0, 1000), random.randint(1200, 1600)) for i in range(3)]
+        # snow.append(Climbing_snow())
+        game_world.add_objects(snow, 1)
+        for s in snow:
             game_world.add_collision_pair('snow:hero', None, s)
         game_world.add_collision_pair('snow:hero', server.climbing_cat, None)
-        flag = 1
+        target_time = get_time()
     game_world.update()
     game_world.handle_collision()
 
