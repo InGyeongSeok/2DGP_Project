@@ -1,8 +1,14 @@
-from pico2d import load_image
+from pico2d import load_image, load_music
+
+import game_framework
+
 
 class Start_back:
     def __init__(self):
         self.image = load_image('resource/back.png')
+        self.bgm = load_music('resource/main.mp3')
+        self.bgm.set_volume(60)
+        self.bgm.repeat_play()
 
     def draw(self):
         self.image.clip_draw(0, 0, 1000, 600, 500, 300)
@@ -28,8 +34,8 @@ class Start_play:
         self.image = load_image('resource/play.png')
 
     def draw(self):
-        self.image.clip_draw(80 * (self.frame // 120), 0, 90, 90, 500 + -20 * (self.frame // 120), 260, 200, 200)
+        self.image.clip_draw(80 * int(self.frame // 20), 0, 90, 90, 500 + -20 * int(self.frame // 20), 260, 200, 200)
 
     def update(self):
-        self.frame = (self.frame + 1) % 240
+        self.frame = (self.frame + 50 *game_framework.frame_time) % 40
         pass
