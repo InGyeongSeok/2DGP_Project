@@ -163,7 +163,8 @@ class StateMachine:
         self.cur_state.enter(self.pingpong_cat, ('NONE', 0))
 
     def update(self):
-        self.cur_state.do(self.pingpong_cat)
+        if get_time() - pingpong_mode.wait_time > 4 and get_time() - pingpong_mode.wait_time < 64:
+            self.cur_state.do(self.pingpong_cat)
 
     def handle_event(self, e):
         for check_event, next_state in self.transitions[self.cur_state].items():
@@ -196,7 +197,7 @@ class Pingpong_cat:
         self.flag = 0
 
     def update(self):
-        print(self.flag)
+        # print(self.flag)
         self.state_machine.update()
 
     def handle_event(self, event):
@@ -206,7 +207,7 @@ class Pingpong_cat:
     def draw(self):
         self.state_machine.draw()
         draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
-        self.font.draw(self.x - 10, self.y + 50, f'{self.smash:02d}', (255, 255, 0))
+        # self.font.draw(self.x - 10, self.y + 50, f'{self.smash:02d}', (255, 255, 0))
 
     def handle_collision(self, group, other):
         pass
