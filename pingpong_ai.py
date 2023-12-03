@@ -18,7 +18,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 # zombie Action Speed
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 10.0
+FRAMES_PER_ACTION = 2
 
 
 class PingPong_ai:
@@ -30,7 +30,7 @@ class PingPong_ai:
         self.action = 0
         self.dir = 1
         self.targetx = 0
-        self.state = 'Idle'
+        self.state = 'Run'
         self.tx, self.ty = 1000, 1000
         self.build_behavior_tree()
         self.image_Run = load_image('resource/PingPong/tengu.png')
@@ -47,19 +47,13 @@ class PingPong_ai:
     def update(self):
         # self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
         # fill here
-        self.frame = (self.frame + 0.01) % 4
-        self.bt.run()
+        if get_time() - pingpong_mode.wait_time > 4 and get_time() - pingpong_mode.wait_time < 64:
+            self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+            self.bt.run()
 
     def draw(self):
         if self.state == 'Run':
-            self.image_Run.clip_draw(int(self.frame) * 80 , 0, 80, 89, self.x , self.y, 300, 300)
-
-            pass
-        # elif self.state == 'Run':
-        #     self.image_Run.clip_draw(int(self.frame) * 80 , 0, 80, 89, self.x, self.y, 300, 300)
-
-            pass
-
+            self.image_Run.clip_draw(int(self.frame) * 80, 0, 80, 89, self.x, self.y, 300, 300)
         draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):

@@ -35,76 +35,95 @@ class Ball:
 
 
     def draw(self):
-        self.image.clip_draw(0, 0, 8, 8, self.x, self.y, self.sizex, self.sizey)
-        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+        if get_time() - pingpong_mode.wait_time > 4 and get_time() - pingpong_mode.wait_time < 64:
+            self.image.clip_draw(0, 0, 8, 8, self.x, self.y, self.sizex, self.sizey)
+            draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
         # 10번의 update가 발생할 때마다 index를 1씩 증가
-        # print(self.x)
-        # print(self.target_x)
+        if get_time() - pingpong_mode.wait_time > 4 and get_time() - pingpong_mode.wait_time < 64:
 
-        if self.x < 0 or self.x > 1000: # to_do 테이블 범위 y 넘어가면 새로 생성!
-            # 새로운 공 생성 로직 추가
+            if self.x < 0 or self.x > 1000:  # to_do 테이블 범위 y 넘어가면 새로 생성!
+                # 새로운 공 생성 로직 추가
 
-            if self.x < 0 :
-                pingpong_mode.ai_score += 10
-            else:
-                pingpong_mode.hero_score += 10
+                if self.x < 0:
+                    pingpong_mode.ai_score += 10
+                else:
+                    pingpong_mode.hero_score += 10
 
-            self.flag = -1
-            print("새로운 공 생성")
-            self.x, self.y = pingpong_mode.pingpong_ai.x - 100, pingpong_mode.pingpong_ai.y
-            self.target_x, self.target_y = pingpong_mode.pingpong_cat.x, pingpong_mode.pingpong_cat.y - 50
-            self.inity = self.target_y - self.y
-            self.cycloid_coordinates = self.calculate_cycloid_coordinates()
-            self.index = 0
-            self.enter = 1
-
-
-        if self.flag == 1 :
-            self.update_count += 1
-            if self.update_count >= self.updates_per_index_increment:
-                self.index += 1
-                self.update_count = 0  # 카운터 초기화
-
-            # 현재 index에 해당하는 싸이클로이드 좌표와 목표 좌표로 선형 보간
-            if self.index < self.divisions:
-                t = self.index / self.divisions
-                cycloid_x, cycloid_y = self.cycloid_coordinates[self.index]
-                self.testx = cycloid_x
-                self.testy = cycloid_y + self.inity // 100 * self.index
-
-                self.x, self.y =self.testx, self.testy
-
-            if self.index == self.divisions:
-                self.x, self.y = self.x, self.y
-                self.target_x, self.target_y = 1100, 300
+                self.flag = -1
+                # print("새로운 공 생성")
+                self.x, self.y = pingpong_mode.pingpong_ai.x - 100, pingpong_mode.pingpong_ai.y
+                self.target_x, self.target_y = pingpong_mode.pingpong_cat.x, pingpong_mode.pingpong_cat.y - 50
                 self.inity = self.target_y - self.y
                 self.cycloid_coordinates = self.calculate_cycloid_coordinates()
                 self.index = 0
+                self.enter = 1
 
-        elif self.flag == -1:
-            self.update_count += 1
-            if self.update_count >= self.updates_per_index_increment:
-                self.index += 1
-                self.update_count = 0  # 카운터 초기화
+            if self.flag == 1:
+                self.update_count += 1
+                if self.update_count >= self.updates_per_index_increment:
+                    self.index += 1
+                    self.update_count = 0  # 카운터 초기화
 
-            # 현재 index에 해당하는 싸이클로이드 좌표와 목표 좌표로 선형 보간
-            if self.index < self.divisions:
-                t = self.index / self.divisions
-                cycloid_x, cycloid_y = self.cycloid_coordinates[self.index]
-                self.testx = cycloid_x
-                self.testy = cycloid_y + self.inity // 100 * self.index
+                # 현재 index에 해당하는 싸이클로이드 좌표와 목표 좌표로 선형 보간
+                if self.index < self.divisions:
+                    t = self.index / self.divisions
+                    cycloid_x, cycloid_y = self.cycloid_coordinates[self.index]
+                    self.testx = cycloid_x
+                    self.testy = cycloid_y + self.inity // 100 * self.index
 
-                self.x, self.y = self.testx, self.testy
-            if self.index == self.divisions:
-                self.x, self.y = self.x, self.y
-                self.target_x, self.target_y = -100, 300
-                self.inity = self.target_y - self.y
-                self.cycloid_coordinates = self.calculate_cycloid_coordinates()
-                self.index = 0
+                    self.x, self.y = self.testx, self.testy
 
+                if self.index == self.divisions:
+                    self.x, self.y = self.x, self.y
+                    self.target_x, self.target_y = 1100, 300
+                    self.inity = self.target_y - self.y
+                    self.cycloid_coordinates = self.calculate_cycloid_coordinates()
+                    self.index = 0
 
+            elif self.flag == -1:
+                self.update_count += 1
+                if self.update_count >= self.updates_per_index_increment:
+                    self.index += 1
+                    self.update_count = 0  # 카운터 초기화
+
+                # 현재 index에 해당하는 싸이클로이드 좌표와 목표 좌표로 선형 보간
+                if self.index < self.divisions:
+                    t = self.index / self.divisions
+                    cycloid_x, cycloid_y = self.cycloid_coordinates[self.index]
+                    self.testx = cycloid_x
+                    self.testy = cycloid_y + self.inity // 100 * self.index
+
+                    self.x, self.y = self.testx, self.testy
+                if self.index == self.divisions:
+                    self.x, self.y = self.x, self.y
+                    self.target_x, self.target_y = -100, 300
+                    self.inity = self.target_y - self.y
+                    self.cycloid_coordinates = self.calculate_cycloid_coordinates()
+                    self.index = 0
+
+            elif pingpong_mode.pingpong_cat.flag == 1:
+                self.update_count += 1
+                if self.update_count >= self.updates_per_index_increment:
+                    self.index += 1
+                    self.update_count = 0  # 카운터 초기화
+
+                # 현재 index에 해당하는 싸이클로이드 좌표와 목표 좌표로 선형 보간
+                if self.index < self.divisions:
+                    t = self.index / self.divisions
+                    cycloid_x, cycloid_y = self.cycloid_coordinates[self.index]
+                    self.testx = cycloid_x
+                    self.testy = cycloid_y + self.inity // 100 * self.index
+
+                    self.x, self.y = self.testx, self.testy
+
+                if self.index == self.divisions:
+                    self.x, self.y = self.x, self.y
+                    self.target_x, self.target_y = 1100, 300
+                    self.inity = self.target_y - self.y
+                    self.cycloid_coordinates = self.calculate_cycloid_coordinates()
+                    self.index = 0
 
     def cycloid(self, t):
         if self.flag == 1 :
@@ -143,7 +162,7 @@ class Ball:
             self.index = 0
             pingpong_mode.pingpong_cat.smash += 1
         elif group == 'ai:ball':
-            if pingpong_mode.pingpong_cat.smash != 5:
+            if pingpong_mode.pingpong_cat.flag == 0:
                 self.flag = -1
                 self.target_x, self.target_y = pingpong_mode.pingpong_cat.x, pingpong_mode.pingpong_cat.y - 50
                 self.inity = self.target_y - self.y

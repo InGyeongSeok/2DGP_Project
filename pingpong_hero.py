@@ -3,7 +3,6 @@
 from pico2d import load_image, get_time, load_font, clamp, draw_rectangle
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_a, SDLK_UP, SDLK_DOWN
 
-import archery_mode
 import game_framework
 import game_world
 import pingpong_mode
@@ -49,15 +48,15 @@ def space_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_SPACE
 
 # time_out = lambda e : e[0] == 'TIME_OUT'
-# PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-# # RUN_SPEED_KMPH = 20.0  # Km / Hour
-# # RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
-# # RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
-# # RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
-# #
-# # TIME_PER_ACTION = 0.5
-# # ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-# # FRAMES_PER_ACTION = 4
+PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
+RUN_SPEED_KMPH = 20.0  # Km / Hour
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 1
 
 
 class Idle:
@@ -73,15 +72,11 @@ class Idle:
 
     @staticmethod
     def do(pingpong_cat):
-        pingpong_cat.frame = (pingpong_cat.frame + 1) % 360
+        pingpong_cat.frame = (pingpong_cat.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
 
     @staticmethod
     def draw(pingpong_cat):
-        #수정 필요!
-        if pingpong_cat.frame < 180:
-            pingpong_cat.image_Idle.clip_draw(0, 0, 34, 40, pingpong_cat.x, pingpong_cat.y, 100, 115)
-        else:
-            pingpong_cat.image_Idle.clip_draw(30, 0, 60, 40, pingpong_cat.x, pingpong_cat.y, 180, 115)
+        pingpong_cat.image_Idle.clip_draw(int(pingpong_cat.frame) * 50, 0, 40, 45, pingpong_cat.x, pingpong_cat.y, 150,150)
 
 
 class Run:
@@ -90,16 +85,16 @@ class Run:
     def enter(pingpong_cat, e):
         # print("Run enter")
         if right_down(e) or left_up(e):  # 오른쪽으로 RUN
-            pingpong_cat.dirx = 0.5
+            pingpong_cat.dirx = 1
             pingpong_cat.diry = 0
         elif left_down(e) or right_up(e):  # 왼쪽으로 RUN
-            pingpong_cat.dirx = -0.5
+            pingpong_cat.dirx = -1
             pingpong_cat.diry = 0
         elif up_down(e) or down_up(e):  # 위로 RUN
-            pingpong_cat.diry = 0.5
+            pingpong_cat.diry = 1
             pingpong_cat.dirx = 0
         elif down_down(e) or up_up(e):  # 아래로 RUN
-            pingpong_cat.diry = -0.5
+            pingpong_cat.diry = -1
             pingpong_cat.dirx = 0
 
         pass
@@ -115,21 +110,15 @@ class Run:
         pingpong_cat.x = clamp(125, pingpong_cat.x, 270)
         pingpong_cat.y = clamp(100, pingpong_cat.y, 500)
 
-        pingpong_cat.frame = (pingpong_cat.frame + 1) % 360
-        pingpong_cat.x += pingpong_cat.dirx
-        pingpong_cat.y += pingpong_cat.diry
+        pingpong_cat.frame = (pingpong_cat.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
+        pingpong_cat.x += pingpong_cat.dirx * RUN_SPEED_PPS * game_framework.frame_time
+        pingpong_cat.y += pingpong_cat.diry * RUN_SPEED_PPS * game_framework.frame_time
 
         pass
 
     @staticmethod
     def draw(pingpong_cat):
-        # archery_cat.image_Run.clip_draw(int(archery_cat.frame) * 22, archery_cat.action * 31, 21, 25, archery_cat.x,
-        #                                 archery_cat.y, 60, 60)
-        if pingpong_cat.frame < 180:
-            pingpong_cat.image_Idle.clip_draw(0, 0, 34, 40, pingpong_cat.x, pingpong_cat.y, 100, 115)
-        else:
-            pingpong_cat.image_Idle.clip_draw(30, 0, 60, 40, pingpong_cat.x, pingpong_cat.y, 180, 115)
-
+        pingpong_cat.image_Idle.clip_draw(int(pingpong_cat.frame) * 50, 0, 40, 45, pingpong_cat.x, pingpong_cat.y, 150,150)
         pass
 
 class Smash:
@@ -140,22 +129,21 @@ class Smash:
 
     @staticmethod
     def exit(pingpong_cat, e):
+        pingpong_cat.flag = 0
         pass
 
     @staticmethod
     def do(pingpong_cat):
         print("smash do")
         if pingpong_cat.smash >= 5:
+            pingpong_cat.flag = 1
             pingpong_cat.smash = 0
-
+        pingpong_cat.frame = (pingpong_cat.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
         pass
 
     @staticmethod
     def draw(pingpong_cat):
-        if pingpong_cat.frame < 180:
-            pingpong_cat.image_Idle.clip_draw(0, 0, 34, 40, pingpong_cat.x, pingpong_cat.y, 100, 115)
-        else:
-            pingpong_cat.image_Idle.clip_draw(30, 0, 60, 40, pingpong_cat.x, pingpong_cat.y, 180, 115)
+        pingpong_cat.image_Idle.clip_draw(int(pingpong_cat.frame) * 50, 0, 40, 45, pingpong_cat.x, pingpong_cat.y, 150,150)
 
         pass
 
@@ -175,7 +163,6 @@ class StateMachine:
         self.cur_state.enter(self.pingpong_cat, ('NONE', 0))
 
     def update(self):
-
         self.cur_state.do(self.pingpong_cat)
 
     def handle_event(self, e):
@@ -206,9 +193,10 @@ class Pingpong_cat:
         self.state_machine.start()
         self.font = load_font('ENCR10B.TTF', 20)
         self.smash = 0
+        self.flag = 0
 
     def update(self):
-        print(self.x)
+        print(self.flag)
         self.state_machine.update()
 
     def handle_event(self, event):
@@ -218,9 +206,7 @@ class Pingpong_cat:
     def draw(self):
         self.state_machine.draw()
         draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
-        self.font.draw(self.x - 10, self.y + 48, f'{pingpong_mode.hero_score:02d}', (255, 255, 0))
-        self.font.draw(self.x - 10, self.y + 96, f'{pingpong_mode.ai_score:02d}', (255, 255, 0))
-        self.font.draw(self.x - 10, self.y + 200, f'{self.smash:02d}', (255, 255, 0))
+        self.font.draw(self.x - 10, self.y + 50, f'{self.smash:02d}', (255, 255, 0))
 
     def handle_collision(self, group, other):
         pass
@@ -228,6 +214,6 @@ class Pingpong_cat:
 
     def get_bb(self):
 
-        return self.x + 30 , self.y - 50, self.x + 60, self.y
+        return self.x + 10 , self.y - 50, self.x + 40, self.y
 
 

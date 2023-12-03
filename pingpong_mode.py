@@ -5,6 +5,7 @@ import climbing_mode
 import game_framework
 import game_world
 import title_mode
+from game_timer import Gametimer
 from pingpong_ai import PingPong_ai
 from pingpong_background import Pingpong_background
 from pingpong_ball import Ball
@@ -23,6 +24,8 @@ def handle_events():
             game_framework.change_mode(archery_mode)
         elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_2:
             game_framework.change_mode(climbing_mode)
+        # elif get_time() - wait_time > 3 and get_time() - wait_time < 64:
+        #     pingpong_cat.handle_event(event)
         else:
             pingpong_cat.handle_event(event)
 
@@ -31,24 +34,28 @@ def init():
     global pingpong_cat
     global pingpong_ai
     global ball
+    global wait_time
     global hero_score
     global ai_score
-    global pingpong_background
+    global pingpong_time
+
+
     hero_score = 0
     ai_score = 0
-
+    wait_time = get_time()
     pingpong_background = Pingpong_background()
     game_world.add_object(pingpong_background, 0)
 
     pingpong_cat = Pingpong_cat()
     game_world.add_object(pingpong_cat, 0)
 
-
+    pingpong_time = 60
 
     pingpong_ai = PingPong_ai()
     game_world.add_object(pingpong_ai, 2)
 
-
+    gametimer = Gametimer(64)
+    game_world.add_object(gametimer, 2)
 
     game_world.add_collision_pair('ai:ball', None, pingpong_ai)
     ball = Ball()
