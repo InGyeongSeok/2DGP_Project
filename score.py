@@ -31,12 +31,12 @@ class Score:
                 self.font.draw(460, 400, f'{int(self.score):d}', (255, 255, 255))
 
 
-            elif self.score > 100 and self.score <= 500:
+            elif self.score <= 500:
                 self.image_low.clip_draw(0, 0, 1000, 600, 500, 300)
                 self.font.draw(450, 400, f'{int(self.score):d}', (255, 255, 255))
 
 
-            elif self.score > 500 and self.score < 1000:
+            elif self.score < 1000:
                 self.image_middle.clip_draw(0, 0, 1000, 600, 500, 300)
                 self.font.draw(450, 400, f'{int(self.score):d}', (255, 255, 255))
 
@@ -46,10 +46,27 @@ class Score:
 
             self.image_archery.clip_draw(0, 0, 1000, 600, 500, 300)
 
-        if self.flag >= 2:
+        if self.flag == 2:
+            if self.score <= 30:
+                self.image_background.clip_draw(0, 0, 1000, 600, 500, 300)
+                self.font.draw(460, 400, f'{int(self.score):d}', (255, 255, 255))
+
+            elif self.score <= 50:
+                self.image_low.clip_draw(0, 0, 1000, 600, 500, 300)
+                self.font.draw(450, 400, f'{int(self.score):d}', (255, 255, 255))
+
+            elif self.score < 70:
+                self.image_middle.clip_draw(0, 0, 1000, 600, 500, 300)
+                self.font.draw(450, 400, f'{int(self.score):d}', (255, 255, 255))
+
+            else:
+                self.image_high.clip_draw(0, 0, 1000, 600, 500, 300)
+                self.font.draw(350, 400, f'{int(self.score):d}', (255, 255, 255))
 
             self.image_archery.clip_draw(0, 0, 1000, 600, 500, 300)
             self.image_climb.clip_draw(0, 0, 1000, 600, 500, 300)
+
+
         if self.flag >= 3:
             self.image_archery.clip_draw(0, 0, 1000, 600, 500, 300)
             self.image_climb.clip_draw(0, 0, 1000, 600, 500, 300)

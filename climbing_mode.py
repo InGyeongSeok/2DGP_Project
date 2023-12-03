@@ -3,6 +3,7 @@ import random
 from pico2d import *
 
 import archery_mode
+import climbing_hero
 import game_framework
 import game_world
 import pingpong_mode
@@ -42,7 +43,6 @@ def init():
     global wait_time
     global target_time
     global climb_time
-
 
     wait_time = get_time()
     target_time = 0
@@ -104,8 +104,6 @@ def init():
     game_world.add_collision_pair('pink:hero', server.climbing_cat, None)
     game_world.add_collision_pair('green:hero', server.climbing_cat, None)
 
-    score_screen = Score(3, 2)
-    game_world.add_object(score_screen, 2)
 
 def update():
     global target_time
@@ -119,6 +117,12 @@ def update():
         target_time = get_time()
     game_world.update()
     game_world.handle_collision()
+
+    if get_time() - wait_time > 30:
+        score_screen = Score(2, server.climbing_cat.current_height_percent)
+        game_world.add_object(score_screen, 2)
+
+    # print(f'현재 높이: {server.climbing_cat.current_height_percent:.2f}%')
 
 def draw():
     clear_canvas()

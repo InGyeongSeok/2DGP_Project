@@ -304,7 +304,7 @@ class Climbing_cat:
         self.font2 = load_font('ENCR10B.TTF', 30)
         self.collision_timer = 0.0  # 충돌 후 경과 시간
         self.collision_duration = 1.0  # 충돌이 무시될 시간 (초)
-
+        self.current_height_percent = 0
 
     def update(self):
         if get_time() - climbing_mode.wait_time > 4 and get_time() - climbing_mode.wait_time < 64:
@@ -324,11 +324,10 @@ class Climbing_cat:
         self.font.draw(465, 565, f'{int(climbing_mode.climb_time):02d}', (255, 255, 255))
         self.state_machine.draw()
         draw_rectangle(*self.get_bb()) #튜플을 풀어해쳐서 각각 인자로 전달
-        current_height_percent = max(0, (self.y - 125) / (1625 - 125) * 100)
+        self.current_height_percent = max(0, (self.y - 125) / (1625 - 125) * 100)
 
-        self.font2.draw(900, 565, f'{int(current_height_percent):d}%', (255, 255, 255))
+        self.font2.draw(900, 565, f'{int(self.current_height_percent):d}%', (255, 255, 255))
 
-        # print(f'현재 높이: {current_height_percent:.2f}%')
 
     def get_bb(self):
         screen_x = self.x - server.background.window_left
