@@ -13,7 +13,7 @@ import server
 from climbing_hold import Hold_pink, Hold_green
 from climbing_snow import Climbing_snow
 from game_timer import Gametimer
-
+from score import Score
 
 flag = 0
 
@@ -104,6 +104,8 @@ def init():
     game_world.add_collision_pair('pink:hero', server.climbing_cat, None)
     game_world.add_collision_pair('green:hero', server.climbing_cat, None)
 
+    score_screen = Score(3, 2)
+    game_world.add_object(score_screen, 2)
 
 def update():
     global target_time

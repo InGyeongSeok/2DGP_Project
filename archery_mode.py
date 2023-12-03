@@ -13,6 +13,8 @@ from archery_background import Archery_background
 from archery_target import Target_50, Target_100
 from archery_hero import Archery_cat
 from game_timer import Gametimer
+from score import Score
+
 
 # Game object class here
 
@@ -71,6 +73,7 @@ def init():
     game_world.add_object(gametimer, 2)
 
 
+
     for s_score in target_50:
         game_world.add_collision_pair('s_score:hero', s_score, None)
         game_world.add_collision_pair('s_score:ai', s_score, None)
@@ -89,7 +92,13 @@ def init():
     # game_world.add_collision_pair('zombie:ball', zombie, None)
 
     target_time = get_time()
+
+
+
+
 def update():
+    global archery_score
+    global ai_score
     global target_50
     global target_100
     global target_time
@@ -107,6 +116,16 @@ def update():
         target_time = get_time()
     game_world.update()
     game_world.handle_collision()
+
+    if get_time() - wait_time > 64:
+        score_screen = Score(1, archery_score, ai_score)
+        game_world.add_object(score_screen, 2)
+
+
+    # if get_time() - wait_time > 5:
+    #     score_screen = Score(1, archery_score, ai_score)
+    #     game_world.add_object(score_screen, 2)
+
 def draw():
     clear_canvas()
     game_world.render()

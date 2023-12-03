@@ -10,6 +10,7 @@ from pingpong_ai import PingPong_ai
 from pingpong_background import Pingpong_background
 from pingpong_ball import Ball
 from pingpong_hero import Pingpong_cat
+from score import Score
 
 
 def handle_events():
@@ -65,6 +66,11 @@ def init():
     game_world.add_collision_pair('ai:ball', ball, None)
 
     game_world.add_collision_pair('hero:ball', None, pingpong_cat)
+
+
+    score_screen = Score(3, 3)
+    game_world.add_object(score_screen, 2)
+
 def update():
     game_world.update()
     game_world.handle_collision()
