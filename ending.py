@@ -1,4 +1,4 @@
-from pico2d import load_image, load_music
+from pico2d import load_image, load_music, load_font
 
 import game_framework
 
@@ -8,34 +8,22 @@ class Ending:
         self.image = load_image('resource/back.png')
         self.bgm = load_music('resource/ending.mp3')
         self.bgm.set_volume(500)
-        self.bgm.repeat_play()
-
-    def draw(self):
-        self.image.clip_draw(0, 0, 1000, 600, 500, 300)
-
-
-    def update(self):
-        pass
-
-class Start_screen:
-    def __init__(self):
-        self.image = load_image('resource/start.png')
-
-    def draw(self):
-        self.image.clip_draw(0, 0, 500, 300, 500, 300, 800, 450)
-
-
-    def update(self):
-        pass
-
-class Start_play:
-    def __init__(self):
+        self.bgm.play()
+        self.images = [load_image('resource/end/%d.jpg' % i) for i in range(1, 36 + 1)]
         self.frame = 0
-        self.image = load_image('resource/play.png')
+        self.font = load_font('ENCR10B.TTF', 50)
+
 
     def draw(self):
-        self.image.clip_draw(80 * int(self.frame // 20), 0, 90, 90, 500 + -20 * int(self.frame // 20), 260, 200, 200)
+        self.images[int(self.frame)].clip_draw(0, 0, 1000, 600, 500, 300)
+
+        if int(self.frame):
+            self.font.draw(430,90, f'{"The End"}', (255, 205,255))
+
+        pass
 
     def update(self):
-        self.frame = (self.frame + 50 *game_framework.frame_time) % 40
+        if int(self.frame) < 35:
+            self.frame = self.frame + 5 * game_framework.frame_time
         pass
+

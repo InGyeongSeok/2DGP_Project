@@ -2,6 +2,7 @@ from pico2d import *
 
 import archery_mode
 import climbing_mode
+import ending_mode
 import game_framework
 import game_world
 import title_mode
@@ -21,6 +22,8 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
+        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE) and get_time() - wait_time > 64:
+            game_framework.change_mode(ending_mode)
         # elif get_time() - wait_time > 3 and get_time() - wait_time < 64:
         #     pingpong_cat.handle_event(event)
         else:
