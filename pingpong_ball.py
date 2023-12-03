@@ -42,7 +42,7 @@ class Ball:
             draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
-        print(self.speed)
+        # print(self.speed)
         # 10번의 update가 발생할 때마다 index를 1씩 증가
         if get_time() - pingpong_mode.wait_time > 4 and get_time() - pingpong_mode.wait_time < 64:
 

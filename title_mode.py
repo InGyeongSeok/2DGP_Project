@@ -1,8 +1,10 @@
-from pico2d import get_events, load_image, clear_canvas, update_canvas, get_time
+from pico2d import get_events, load_image, clear_canvas, update_canvas, get_time, pico2d
 from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE, SDL_MOUSEBUTTONDOWN
 
+import climbing_mode
 import game_framework
 import archery_mode
+import pingpong_mode
 from title import Start_back, Start_screen, Start_play
 
 
@@ -44,8 +46,12 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
-        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
+        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_1:
             game_framework.change_mode(archery_mode)
+        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_2:
+            game_framework.change_mode(climbing_mode)
+        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_3:
+            game_framework.change_mode(pingpong_mode)
 
 
 

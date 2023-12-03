@@ -25,9 +25,9 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
-        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_1:
+        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_1 and get_time() - wait_time > 34:
             game_framework.change_mode(archery_mode)
-        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_3:
+        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_3 and get_time() - wait_time > 34:
             game_framework.change_mode(pingpong_mode)
         elif get_time() - wait_time > 3 and get_time() - wait_time < 34:
             server.climbing_cat.handle_event(event)
