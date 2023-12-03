@@ -44,6 +44,9 @@ class Archery_background:
         self.font.draw(465, 565, f'{int(archery_mode.archery_time):02d}', (255, 255, 255))
         self.font2.draw(315, 555, f'{archery_mode.archery_score:02d}', (0, 255, 0))
         self.font3.draw(615, 555, f'{archery_mode.ai_score:02d}', (255, 0, 0))
+
+
+
     def update(self):
         global archery_time
 

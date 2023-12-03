@@ -1,7 +1,7 @@
 from pico2d import open_canvas, close_canvas, delay, hide_cursor
 import game_framework
-import title_mode as start_mode
-# import archery_mode as start_mode
+# import title_mode as start_mode
+import archery_mode as start_mode
 # import climbing_mode as start_mode
 # import pingpong_mode as start_mode
 
