@@ -29,10 +29,8 @@ def handle_events():
             game_framework.change_mode(title_mode)
         elif get_time() - wait_time > 3 and get_time() - wait_time < 64:
             archery_cat.handle_event(event)
-        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_2 and get_time() - wait_time > 64:
+        elif  (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE) and get_time() - wait_time > 64:
             game_framework.change_mode(climbing_mode)
-        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_3 and get_time() - wait_time > 64:
-            game_framework.change_mode(pingpong_mode)
         # else:
         #     archery_cat.handle_event(event)
 

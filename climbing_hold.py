@@ -2,6 +2,7 @@ import random
 
 from pico2d import load_image, draw_rectangle, get_time
 
+import climbing_mode
 import game_world
 import server
 
@@ -77,14 +78,15 @@ class Hold_green:
         return screen_x - 10, screen_y -20, screen_x + 10, screen_y + 10
     def handle_collision(self, group, other):
         # print("hold_green!!")
-        if group == 'green:hero':
-            if self.collide_time == 0:
-                self.collide_time = get_time()
-            else:
-                if get_time() - self.collide_time > 0.8:
-                    game_world.remove_object(self)
-                    self.collide_time = 0
-            global holdx, holdy
-            holdx = self.x
-            holdy = self.y
+        if get_time() - climbing_mode.wait_time > 4 and get_time() - climbing_mode.wait_time < 34:
+            if group == 'green:hero':
+                if self.collide_time == 0:
+                    self.collide_time = get_time()
+                else:
+                    if get_time() - self.collide_time > 0.8:
+                        game_world.remove_object(self)
+                        self.collide_time = 0
+                global holdx, holdy
+                holdx = self.x
+                holdy = self.y
         pass

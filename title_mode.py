@@ -46,12 +46,8 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
-        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_1:
+        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
             game_framework.change_mode(archery_mode)
-        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_2:
-            game_framework.change_mode(climbing_mode)
-        elif event.type == SDL_KEYDOWN and event.key == pico2d.SDLK_3:
-            game_framework.change_mode(pingpong_mode)
 
 
 
