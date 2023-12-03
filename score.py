@@ -49,25 +49,43 @@ class Score:
         if self.flag == 2:
             if self.score <= 30:
                 self.image_background.clip_draw(0, 0, 1000, 600, 500, 300)
-                self.font.draw(460, 400, f'{int(self.score):d}', (255, 255, 255))
+                self.font.draw(445, 400, f'{int(self.score):d}', (255, 255, 255))
 
             elif self.score <= 50:
                 self.image_low.clip_draw(0, 0, 1000, 600, 500, 300)
-                self.font.draw(450, 400, f'{int(self.score):d}', (255, 255, 255))
+                self.font.draw(445, 400, f'{int(self.score):d}', (255, 255, 255))
 
             elif self.score < 70:
                 self.image_middle.clip_draw(0, 0, 1000, 600, 500, 300)
-                self.font.draw(450, 400, f'{int(self.score):d}', (255, 255, 255))
+                self.font.draw(445, 400, f'{int(self.score):d}', (255, 255, 255))
 
             else:
                 self.image_high.clip_draw(0, 0, 1000, 600, 500, 300)
-                self.font.draw(350, 400, f'{int(self.score):d}', (255, 255, 255))
+                self.font.draw(450, 400, f'{int(self.score):d}', (255, 255, 255))
 
             self.image_archery.clip_draw(0, 0, 1000, 600, 500, 300)
             self.image_climb.clip_draw(0, 0, 1000, 600, 500, 300)
 
 
-        if self.flag >= 3:
+        if self.flag == 3:
+            if self.hero_score > self.ai_score:
+                self.score = self.ai_score + 100
+
+            if self.score <= 30:
+                self.image_background.clip_draw(0, 0, 1000, 600, 500, 300)
+                self.font.draw(445, 400, f'{int(self.score):d}', (255, 255, 255))
+
+            elif self.score <= 50:
+                self.image_low.clip_draw(0, 0, 1000, 600, 500, 300)
+                self.font.draw(445, 400, f'{int(self.score):d}', (255, 255, 255))
+
+            elif self.score < 70:
+                self.image_middle.clip_draw(0, 0, 1000, 600, 500, 300)
+                self.font.draw(445, 400, f'{int(self.score):d}', (255, 255, 255))
+
+            else:
+                self.image_high.clip_draw(0, 0, 1000, 600, 500, 300)
+                self.font.draw(445, 400, f'{int(self.score):d}', (255, 255, 255))
             self.image_archery.clip_draw(0, 0, 1000, 600, 500, 300)
             self.image_climb.clip_draw(0, 0, 1000, 600, 500, 300)
             self.image_pingpong.clip_draw(0, 0, 1000, 600, 500, 300)

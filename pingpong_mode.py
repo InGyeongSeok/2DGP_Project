@@ -64,13 +64,15 @@ def init():
     game_world.add_collision_pair('hero:ball', None, pingpong_cat)
 
 
-    score_screen = Score(3, 3)
-    game_world.add_object(score_screen, 2)
+
 
 def update():
     game_world.update()
     game_world.handle_collision()
 
+    if get_time() - wait_time > 64:
+        score_screen = Score(3, hero_score, ai_score)
+        game_world.add_object(score_screen, 2)
 
 def draw():
     clear_canvas()
