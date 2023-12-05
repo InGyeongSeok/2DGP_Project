@@ -17,7 +17,7 @@ class Ending:
     def draw(self):
         self.images[int(self.frame)].clip_draw(0, 0, 1000, 600, 500, 300)
 
-        if int(self.frame):
+        if int(self.frame) > 30:
             self.font.draw(430,90, f'{"The End"}', (255, 205,255))
 
         pass

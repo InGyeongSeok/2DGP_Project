@@ -20,7 +20,7 @@ class Climbing_snow:
         screen_x = self.x - server.background.window_left
         screen_y = self.y - server.background.window_bottom
         self.image.clip_draw(0, 0, 24, 80, screen_x, screen_y, 120,400)
-        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+        # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
         if get_time() - climbing_mode.wait_time > 4 and get_time() - climbing_mode.wait_time < 34:

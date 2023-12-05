@@ -4,6 +4,7 @@ from pico2d import *
 
 import game_framework
 import game_world
+import title_mode
 from ending import Ending
 
 
@@ -18,6 +19,8 @@ def handle_events():
             game_framework.quit()
         elif  (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE) and get_time() - wait_time > 10:
             game_framework.quit()
+        elif  (event.type, event.key) == (SDL_KEYDOWN, SDLK_r) and get_time() - wait_time > 10:
+            game_framework.change_mode(title_mode)
         # else:
         #     archery_cat.handle_event(event)
 

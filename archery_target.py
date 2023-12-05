@@ -36,7 +36,7 @@ class Target_50:
         elif self.frame >= 75:
             self.image.clip_draw(83, 0, 17, 20, self.x, self.y, self.sizex, self.sizey)
 
-        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+        # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
         self.frame = self.frame + 100 *game_framework.frame_time
@@ -73,12 +73,12 @@ class Target_100:
     def draw(self):
 
         self.image.clip_draw(2, 0, 20, 30, self.x , self.y, 70, 90)
-        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+        # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
     def update(self):
         # self.y += self.velocity
         # self.y = 200
         # self.frame = 30
-        if get_time() - archery_mode.wait_time > 4 and get_time() - archery_mode.wait_time <64:
+        if get_time() - archery_mode.wait_time > 4 and get_time() - archery_mode.wait_time <34:
             self.x = clamp(25, self.x, 1000-25)
             self.x += self.dirx * 50 *game_framework.frame_time
 

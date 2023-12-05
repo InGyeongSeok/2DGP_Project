@@ -27,9 +27,9 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
-        elif get_time() - wait_time > 3 and get_time() - wait_time < 64:
+        elif get_time() - wait_time > 3 and get_time() - wait_time < 34:
             archery_cat.handle_event(event)
-        elif  (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE) and get_time() - wait_time > 64:
+        elif  (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE) and get_time() - wait_time > 34:
             game_framework.change_mode(climbing_mode)
         # else:
         #     archery_cat.handle_event(event)
@@ -48,7 +48,7 @@ def init():
     # global target_bomb
 
     wait_time = get_time()
-    archery_time = 60
+    archery_time = 30
     archery_score = 0
     ai_score = 0
 
@@ -67,7 +67,7 @@ def init():
     # target_bomb = [Target_bomb() for i in range(3)]
     # game_world.add_objects(target_bomb, 0)
 
-    gametimer = Gametimer(64)
+    gametimer = Gametimer(34)
     game_world.add_object(gametimer, 2)
 
 
@@ -115,7 +115,7 @@ def update():
     game_world.update()
     game_world.handle_collision()
 
-    if get_time() - wait_time > 64:
+    if get_time() - wait_time > 34:
         score_screen = Score(1, archery_score, ai_score)
         game_world.add_object(score_screen, 2)
 

@@ -20,7 +20,7 @@ class Arrow:
         else:
             self.image_red.clip_draw(18, 0, 15, 20, self.x + 5, self.y, 45, 45)
 
-        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+        # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
         self.y += 350 * game_framework.frame_time

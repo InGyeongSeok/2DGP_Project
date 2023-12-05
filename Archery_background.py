@@ -54,7 +54,7 @@ class Archery_background:
             self.bgm_started = True
             self.bgm.repeat_play()
 
-        if get_time() - archery_mode.wait_time > 4 and get_time() - archery_mode.wait_time < 64:
+        if get_time() - archery_mode.wait_time > 4 and get_time() - archery_mode.wait_time < 34:
             if  archery_mode.archery_time > 0:
                 archery_mode.archery_time -= game_framework.frame_time
         self.frame = (self.frame + game_framework.frame_time) % 2

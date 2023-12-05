@@ -44,7 +44,7 @@ class Archery_ai:
     def update(self):
         # self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
         # fill here
-        if get_time() - archery_mode.wait_time > 4 and get_time() - archery_mode.wait_time < 64:
+        if get_time() - archery_mode.wait_time > 4 and get_time() - archery_mode.wait_time < 34:
             self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 7
             self.bt.run()
 
@@ -59,7 +59,7 @@ class Archery_ai:
             self.image_Run.clip_draw(int(self.frame) * 56 + 8, 0, 56, 54, self.x, self.y, 100, 100)
             pass
 
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
         pass

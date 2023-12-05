@@ -206,7 +206,7 @@ class Pingpong_cat:
 
     def draw(self):
         self.state_machine.draw()
-        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+        # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
         # self.font.draw(self.x - 10, self.y + 50, f'{self.smash:02d}', (255, 255, 0))
 
     def handle_collision(self, group, other):

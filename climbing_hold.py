@@ -26,7 +26,7 @@ class Hold_pink:
         screen_y = self.y - server.background.window_bottom
         self.image.clip_draw(0, 0, 13, 13, screen_x, screen_y, self.sizex, self.sizey)
 
-        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+        # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
         pass
@@ -66,7 +66,7 @@ class Hold_green:
         screen_y = self.y - server.background.window_bottom
         self.image.clip_draw(0, 15, 13, 13, screen_x, screen_y, self.sizex, self.sizey)
 
-        draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+        # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
         pass

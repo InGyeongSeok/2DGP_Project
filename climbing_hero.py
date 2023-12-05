@@ -323,7 +323,7 @@ class Climbing_cat:
     def draw(self):
         self.font.draw(465, 565, f'{int(climbing_mode.climb_time):02d}', (255, 255, 255))
         self.state_machine.draw()
-        draw_rectangle(*self.get_bb()) #튜플을 풀어해쳐서 각각 인자로 전달
+        # draw_rectangle(*self.get_bb()) #튜플을 풀어해쳐서 각각 인자로 전달
         self.current_height_percent = max(0, (self.y - 125) / (1625 - 125) * 100)
 
         self.font2.draw(900, 565, f'{int(self.current_height_percent):d}%', (255, 255, 255))

@@ -54,7 +54,7 @@ class PingPong_ai:
     def draw(self):
         if self.state == 'Run':
             self.image_Run.clip_draw(int(self.frame) * 80, 0, 80, 89, self.x, self.y, 300, 300)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
         pass

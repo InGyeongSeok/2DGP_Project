@@ -39,10 +39,10 @@ class Ball:
     def draw(self):
         if get_time() - pingpong_mode.wait_time > 4 and get_time() - pingpong_mode.wait_time < 64:
             self.image.clip_draw(0, 0, 8, 8, self.x, self.y, self.sizex, self.sizey)
-            draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
+            # draw_rectangle(*self.get_bb())  # 튜플을 풀어해쳐서 각각 인자로 전달
 
     def update(self):
-        # print(self.speed)
+        print(self.speed)
         # 10번의 update가 발생할 때마다 index를 1씩 증가
         if get_time() - pingpong_mode.wait_time > 4 and get_time() - pingpong_mode.wait_time < 64:
 
@@ -66,8 +66,12 @@ class Ball:
             if self.flag == 1:
                 self.update_count +=  200 * game_framework.frame_time
                 if self.update_count >= self.updates_per_index_increment:
-                    self.index += 1 + self.speed
+                    self.index += 1
                     self.update_count = 0  # 카운터 초기화
+
+                    self.index = self.index + int(self.speed)
+
+
                 # 현재 index에 해당하는 싸이클로이드 좌표와 목표 좌표로 선형 보간
                 if self.index < self.divisions:
                     t = self.index / self.divisions
@@ -87,9 +91,10 @@ class Ball:
             elif self.flag == -1:
                 self.update_count += 200 * game_framework.frame_time
                 if self.update_count >= self.updates_per_index_increment:
-                    self.index += 1 + self.speed
+                    self.index += 1
                     self.update_count = 0  # 카운터 초기화
-                self.index = self.index * self.speed
+
+                    self.index = self.index + int(self.speed)
 
                 # 현재 index에 해당하는 싸이클로이드 좌표와 목표 좌표로 선형 보간
                 if self.index < self.divisions:
@@ -111,6 +116,8 @@ class Ball:
                 if self.update_count >= self.updates_per_index_increment:
                     self.index += 1
                     self.update_count = 0  # 카운터 초기화
+
+                    self.index = self.index + int(self.speed)
 
                 # 현재 index에 해당하는 싸이클로이드 좌표와 목표 좌표로 선형 보간
                 if self.index < self.divisions:
@@ -159,7 +166,7 @@ class Ball:
             return
         if group == 'hero:ball':
             self.flag = 1
-            self.speed = self.speed + int(200 * game_framework.frame_time)
+            self.speed = self.speed + 20 * game_framework.frame_time
 
             self.target_x, self.target_y = pingpong_mode.pingpong_ai.x - 100, pingpong_mode.pingpong_ai.y
             self.inity = self.target_y - self.y
@@ -174,7 +181,7 @@ class Ball:
                     self.inity = self.target_y - self.y
                     self.cycloid_coordinates = self.calculate_cycloid_coordinates()
                     self.index = 0
-                    self.speed = self.speed + int(200 * game_framework.frame_time)
+                    self.speed = self.speed + 20 * game_framework.frame_time
 
         self.ignore_collision_time = current_time  # 충돌 무시 시작 시간 기록
         self.still_time = current_time  # 움직임 기록 시간 초기화
