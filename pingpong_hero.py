@@ -195,7 +195,7 @@ class Pingpong_cat:
         self.flag = 0
 
     def update(self):
-        # print(self.flag)
+        # print(self.y)
         self.state_machine.update()
 
     def handle_event(self, event):

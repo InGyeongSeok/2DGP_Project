@@ -137,12 +137,12 @@ class Ball:
 
     def cycloid(self, t):
         if self.flag == 1 :
-            r = 55  # 싸이클로이드 반지름
+            r = 50  # 싸이클로이드 반지름
             x = r * (t - math.sin(t)) + self.x
             y = r * ( - math.cos(t)) + self.y
             return x, y
         elif self.flag == -1:
-            r =55  # 싸이클로이드 반지름
+            r =50  # 싸이클로이드 반지름
             x = -r * (t - math.sin(t)) + self.x
             y = r * (1 - math.cos(t)) + self.y
             return x, y
