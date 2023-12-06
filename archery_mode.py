@@ -100,7 +100,7 @@ def update():
     global target_50
     global target_100
     global target_time
-    if get_time() - target_time > 15:
+    if get_time() - target_time > 10:
         target_50 = [Target_50() for _ in range(8)]
         game_world.add_objects(target_50, 0)
         for s_score in target_50:

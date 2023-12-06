@@ -61,7 +61,7 @@ class Score:
 
             else:
                 self.image_high.clip_draw(0, 0, 1000, 600, 500, 300)
-                self.font.draw(450, 400, f'{int(self.score):d}', (255, 255, 255))
+                self.font.draw(440, 400, f'{int(self.score):d}', (255, 255, 255))
 
             self.image_archery.clip_draw(0, 0, 1000, 600, 500, 300)
             self.image_climb.clip_draw(0, 0, 1000, 600, 500, 300)
@@ -95,7 +95,7 @@ class Score:
 
 
     def update(self):
-        print(self.score)
+        # print(self.score)
         # if get_time() - self.wait_time > 90:
         #     print("Timeout!!")
         pass

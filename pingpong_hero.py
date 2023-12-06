@@ -125,8 +125,7 @@ class Smash:
 
     @staticmethod
     def enter(pingpong_cat, e):
-        print("smash enter")
-
+        pass
     @staticmethod
     def exit(pingpong_cat, e):
         pingpong_cat.flag = 0
@@ -134,7 +133,6 @@ class Smash:
 
     @staticmethod
     def do(pingpong_cat):
-        print("smash do")
         if pingpong_cat.smash >= 5:
             pingpong_cat.flag = 1
             pingpong_cat.smash = 0
